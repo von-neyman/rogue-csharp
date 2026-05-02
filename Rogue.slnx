@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Rogue.Data/Rogue.Data.csproj" Id="e364de94-ade9-415a-85cc-b80cc35cf496" />
+  <Project Path="Rogue.Domain/Rogue.Domain.csproj" Id="ac4c97c9-9f3a-4c39-9570-0c24b78cd6dd" />
+  <Project Path="Rogue.Presentation/Rogue.Presentation.csproj" Id="dd9e0bd1-5fcb-467a-96f2-f1c3204a5604" />
+</Solution>
