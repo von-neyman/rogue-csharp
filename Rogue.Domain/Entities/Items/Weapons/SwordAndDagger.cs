@@ -1,0 +1,19 @@
+﻿using Rogue.Domain.Entities.Items.Weapons.Interfaces;
+
+namespace Rogue.Domain.Entities.Items.Weapons;
+
+/// <summary>
+/// Шпага и кинжал — лёгкое оружие. Механики: контратака, парирование.
+/// </summary>
+public class SwordAndDagger : Weapon, ILightWeapon, ICounterattack, IParry
+{
+    public SwordAndDagger()
+    {
+        Name = "Шпага и кинжал";
+        Description = "Шпага в ведущей руке для уколов, кинжал во второй — для защиты. " +
+                      "Точный выпад. Кинжал отбивает половину вражеских атак, шпага " +
+                      "наказывает за промахи. В дуэли один на один владелец этой пары " +
+                      "практически неуязвим.";
+        Symbol = ')';
+    }
+}
