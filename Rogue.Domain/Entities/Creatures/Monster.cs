@@ -4,7 +4,7 @@ namespace Rogue.Domain.Entities.Creatures;
 
 /// <summary>
 /// Базовый класс для всех противников.
-/// Содержит радиус преследования, добычу и абстрактный метод IdleMove.
+/// Содержит радиус преследования, добычу, стоимость в пуле и абстрактный метод IdleMove.
 /// </summary>
 public abstract class Monster : Creature
 {
@@ -13,6 +13,9 @@ public abstract class Monster : Creature
 
     /// <summary>Сокровище, выпадающее при смерти.</summary>
     public Treasure? TreasureLoot { get; set; }
+
+    /// <summary>Стоимость в очках пула монстров при генерации уровня.</summary>
+    public abstract int Cost { get; }
 
     /// <summary>Уникальный паттерн движения вне боя (idle).</summary>
     public abstract void IdleMove();

@@ -10,6 +10,8 @@ namespace Rogue.Domain.Entities.Creatures;
 /// </summary>
 public class Vampire : Monster
 {
+    public override int Cost => 4;
+
     /// <summary>Уклонился ли уже от первого удара в этом бою.</summary>
     public bool FirstHitEvaded { get; set; }
 

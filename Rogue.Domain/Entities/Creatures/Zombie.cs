@@ -9,6 +9,8 @@ namespace Rogue.Domain.Entities.Creatures;
 /// </summary>
 public class Zombie : Monster
 {
+    public override int Cost => 1;
+
     public Zombie()
     {
         Strength = 4;

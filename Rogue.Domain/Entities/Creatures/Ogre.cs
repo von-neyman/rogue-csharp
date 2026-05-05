@@ -9,6 +9,8 @@ namespace Rogue.Domain.Entities.Creatures;
 /// </summary>
 public class Ogre : Monster
 {
+    public override int Cost => 2;
+
     /// <summary>Отдыхает ли огр после предыдущей атаки.</summary>
     public bool IsResting { get; set; }
 

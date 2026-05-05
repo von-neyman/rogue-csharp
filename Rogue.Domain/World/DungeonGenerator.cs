@@ -34,6 +34,7 @@ public static class DungeonGenerator
     private const int CorridorRightTurn = 2;
     private const int CorridorTopToBottom = 3;
 
+    // Паттерн Pipeline: метод Generate() последовательно вызывает этапы генерации. Каждый этап получает данные от предыдущего и передаёт следующему.
     /// <summary>Главный метод генерации. Заполняет переданные списки комнат и коридоров.</summary>
     public static void Generate(List<Room> rooms, List<Corridor> corridors)
     {

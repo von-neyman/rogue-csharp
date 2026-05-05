@@ -9,6 +9,8 @@ namespace Rogue.Domain.Entities.Creatures;
 /// </summary>
 public class Ghost : Monster
 {
+    public override int Cost => 2;
+
     /// <summary>Невидимо ли привидение.</summary>
     public bool IsInvisible { get; set; } = true;
 

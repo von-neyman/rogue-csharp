@@ -31,6 +31,7 @@ public class Inventory
     /// <summary>Максимальное количество слотов для каждого типа (кроме сокровищ).</summary>
     public const int MaxSlotsPerType = 9;
 
+    // Паттерн Facade: скрывает работу с пятью списками за простыми методами AddFood, AddWeapon, AddScroll, AddPotion, AddTreasure.
     /// <summary>Добавить еду в инвентарь. Возвращает false, если нет места.</summary>
     public bool AddFood(Food food)
     {

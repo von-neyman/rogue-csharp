@@ -38,6 +38,10 @@ public class Room
     /// <summary>Предметы на полу в комнате.</summary>
     public List<Item> Items { get; set; } = [];
 
+    /// <summary>Занятые позиции в комнате (игрок, выход, монстры, предметы).
+    /// Используется при генерации для исключения накладок.</summary>
+    public List<(int X, int Y)> OccupiedPositions { get; set; } = [];
+
     /// <summary>Является ли комната стартовой (игрок появляется здесь).</summary>
     public bool IsStartRoom { get; set; }
 
