@@ -2,7 +2,6 @@
 
 /// <summary>
 /// Базовый класс для всех живых существ — игрока и монстров.
-/// Содержит общие характеристики, позицию на карте и методы получения урона/лечения.
 /// </summary>
 public abstract class Creature
 {
@@ -28,7 +27,7 @@ public abstract class Creature
     public bool IsAlive => Health > 0;
 
     /// <summary>Символ для отображения на карте.</summary>
-    public char Symbol { get; set; }
+    public char Symbol { get; protected set; }
 
     /// <summary>Получить урон. Health не опускается ниже 0.</summary>
     public void TakeDamage(int amount)
@@ -42,5 +41,11 @@ public abstract class Creature
     {
         Health += amount;
         if (Health > MaxHealth) Health = MaxHealth;
+    }
+
+    /// <summary>Атаковать другое существо.</summary>
+    public bool Attack(Creature target)
+    {
+        return Systems.CombatSystem.Attack(this, target);
     }
 }

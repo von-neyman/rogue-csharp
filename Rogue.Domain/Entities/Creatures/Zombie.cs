@@ -1,4 +1,5 @@
-﻿using Rogue.Domain.Entities.Items.Treasures;
+﻿using Rogue.Domain.Entities.Creatures.Interfaces;
+using Rogue.Domain.Entities.Items.Treasures;
 
 namespace Rogue.Domain.Entities.Creatures;
 
@@ -7,10 +8,8 @@ namespace Rogue.Domain.Entities.Creatures;
 /// Характеристики: сила 4, ловкость 3, здоровье 30, враждебность 4.
 /// Особых способностей нет.
 /// </summary>
-public class Zombie : Monster
+public class Zombie : Monster, IRandomWalk
 {
-    public override int Cost => 1;
-
     public Zombie()
     {
         Strength = 4;
@@ -18,12 +17,8 @@ public class Zombie : Monster
         MaxHealth = 30;
         Health = 30;
         Hostility = 4;
+        Cost = 1;
         TreasureLoot = new GoldSpoon { IsOnGround = false };
         Symbol = 'Z';
-    }
-
-    public override void IdleMove()
-    {
-        // TODO: случайное блуждание
     }
 }

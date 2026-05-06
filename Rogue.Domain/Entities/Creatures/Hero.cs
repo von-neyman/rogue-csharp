@@ -1,5 +1,5 @@
-﻿using Rogue.Domain.Entities.Items.Weapons;
-using Rogue.Domain.Entities.Items.Weapons.Interfaces;
+﻿using Rogue.Domain.Entities.Creatures.Interfaces;
+using Rogue.Domain.Entities.Items.Weapons;
 
 namespace Rogue.Domain.Entities.Creatures;
 
@@ -8,7 +8,7 @@ namespace Rogue.Domain.Entities.Creatures;
 /// Стартовые характеристики: сила 4, ловкость 4, здоровье 20.
 /// Может экипировать оружие и носить предметы в инвентаре.
 /// </summary>
-public class Hero : Creature
+public class Hero : Creature, IInventory, IEquipment
 {
     /// <summary>Инвентарь с предметами.</summary>
     public Inventory Inventory { get; set; }
@@ -24,39 +24,5 @@ public class Hero : Creature
         Health = 20;
         Symbol = '@';
         Inventory = new Inventory();
-    }
-
-    /// <summary>Рассчитать урон с учётом оружия. Без оружия — чистая сила.</summary>
-    public int CalculateDamage()
-    {
-        int multiplier = 1;
-        if (EquippedWeapon != null)
-        {
-            multiplier = EquippedWeapon switch
-            {
-                ILightWeapon w => w.StrengthMultiplier,
-                IBalancedWeapon w => w.StrengthMultiplier,
-                IHeavyWeapon w => w.StrengthMultiplier,
-                _ => 1
-            };
-        }
-        return Strength * multiplier;
-    }
-
-    /// <summary>Рассчитать эффективную ловкость для попадания с учётом оружия.</summary>
-    public int CalculateAccuracy()
-    {
-        int multiplier = 1;
-        if (EquippedWeapon != null)
-        {
-            multiplier = EquippedWeapon switch
-            {
-                ILightWeapon w => w.AgilityMultiplier,
-                IBalancedWeapon w => w.AgilityMultiplier,
-                IHeavyWeapon w => w.AgilityMultiplier,
-                _ => 1
-            };
-        }
-        return Agility * multiplier;
     }
 }

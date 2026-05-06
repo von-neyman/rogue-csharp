@@ -1,18 +1,16 @@
-﻿using Rogue.Domain.Entities.Items.Treasures;
+﻿using Rogue.Domain.Entities.Creatures.Interfaces;
+using Rogue.Domain.Entities.Items.Treasures;
 
 namespace Rogue.Domain.Entities.Creatures;
 
 /// <summary>
 /// Огр — медленный, но чрезвычайно сильный противник.
 /// Характеристики: сила 8, ловкость 3, здоровье 40, враждебность 4.
-/// Ходит на 2 клетки за ход. Атакует каждый второй ход (удар — отдых — удар).
+/// Ходит на 2 клетки за ход. После атаки отдыхает следующий ход.
 /// </summary>
-public class Ogre : Monster
+public class Ogre : Monster, IDoubleStepWalk, IRecharge
 {
-    public override int Cost => 2;
-
-    /// <summary>Отдыхает ли огр после предыдущей атаки.</summary>
-    public bool IsResting { get; set; }
+    public bool IsRecharging { get; set; }
 
     public Ogre()
     {
@@ -21,12 +19,8 @@ public class Ogre : Monster
         MaxHealth = 40;
         Health = 40;
         Hostility = 4;
+        Cost = 2;
         TreasureLoot = new GoldPlate { IsOnGround = false };
         Symbol = 'O';
-    }
-
-    public override void IdleMove()
-    {
-        // TODO: движение на 2 клетки за ход
     }
 }
