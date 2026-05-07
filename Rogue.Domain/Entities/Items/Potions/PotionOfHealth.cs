@@ -4,7 +4,6 @@ namespace Rogue.Domain.Entities.Items.Potions;
 
 /// <summary>
 /// Зелье здоровья — временно удваивает максимальное здоровье.
-/// Текущее здоровье также повышается.
 /// </summary>
 public class PotionOfHealth : Potion
 {
@@ -15,8 +14,10 @@ public class PotionOfHealth : Potion
         Symbol = '!';
     }
 
-    public override void Apply(Hero player)
+    public override void Apply(Creature creature)
     {
-        // TODO: EffectSystem — удвоение макс. здоровья на Duration ходов
+        creature.HealthBoostTurns += Duration;
+        creature.MaxHealth = creature.BaseMaxHealth * 2;
+        creature.Heal(creature.BaseMaxHealth);
     }
 }

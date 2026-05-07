@@ -10,14 +10,15 @@ namespace Rogue.Domain.Entities.Creatures;
 /// </summary>
 public class Ogre : Monster, IDoubleStepWalk, IRecharge
 {
-    public bool IsRecharging { get; set; }
-
     public Ogre()
     {
-        Strength = 8;
-        Agility = 3;
-        MaxHealth = 40;
-        Health = 40;
+        BaseStrength = 8;
+        BaseAgility = 3;
+        BaseMaxHealth = 40;
+        Strength = BaseStrength;
+        Agility = BaseAgility;
+        MaxHealth = BaseMaxHealth;
+        Health = MaxHealth;
         Hostility = 4;
         Cost = 2;
         TreasureLoot = new GoldPlate { IsOnGround = false };

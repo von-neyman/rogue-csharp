@@ -14,8 +14,9 @@ public class PotionOfStrength : Potion
         Symbol = '!';
     }
 
-    public override void Apply(Hero player)
+    public override void Apply(Creature creature)
     {
-        // TODO: EffectSystem — удвоение силы на Duration ходов
+        creature.StrengthBoostTurns += Duration;
+        creature.Strength = creature.BaseStrength * 2;
     }
 }

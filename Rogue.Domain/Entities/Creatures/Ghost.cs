@@ -13,10 +13,13 @@ public class Ghost : Monster, ITeleport, IInvisible
 
     public Ghost()
     {
-        Strength = 3;
-        Agility = 6;
-        MaxHealth = 15;
-        Health = 15;
+        BaseStrength = 3;
+        BaseAgility = 6;
+        BaseMaxHealth = 15;
+        Strength = BaseStrength;
+        Agility = BaseAgility;
+        MaxHealth = BaseMaxHealth;
+        Health = MaxHealth;
         Hostility = 3;
         Cost = 2;
         TreasureLoot = new GoldPlate { IsOnGround = false };

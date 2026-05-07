@@ -3,8 +3,7 @@
 namespace Rogue.Domain.Entities.Items.Scrolls;
 
 /// <summary>
-/// Свиток здоровья — перманентно увеличивает максимальное здоровье на 5.
-/// Текущее здоровье также повышается.
+/// Свиток здоровья — перманентно увеличивает базовое максимальное здоровье.
 /// </summary>
 public class ScrollOfHealth : Scroll
 {
@@ -15,9 +14,18 @@ public class ScrollOfHealth : Scroll
         Symbol = '?';
     }
 
-    public override void Apply(Hero player)
+    public override void Apply(Creature creature)
     {
-        player.MaxHealth += 5;
-        player.Health += 5;
+        creature.BaseMaxHealth += HealthIncrease;
+        if (creature.HealthBoostTurns > 0)
+        {
+            creature.MaxHealth = creature.BaseMaxHealth * 2;
+            creature.Heal(HealthIncrease * 2);
+        }
+        else
+        {
+            creature.MaxHealth = creature.BaseMaxHealth;
+            creature.Heal(HealthIncrease);
+        }
     }
 }

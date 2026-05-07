@@ -12,10 +12,13 @@ public class SnakeMage : Monster, IDiagonalWalk, ISleepInducer
 {
     public SnakeMage()
     {
-        Strength = 4;
-        Agility = 8;
-        MaxHealth = 20;
-        Health = 20;
+        BaseStrength = 4;
+        BaseAgility = 8;
+        BaseMaxHealth = 20;
+        Strength = BaseStrength;
+        Agility = BaseAgility;
+        MaxHealth = BaseMaxHealth;
+        Health = MaxHealth;
         Hostility = 6;
         Cost = 4;
         TreasureLoot = new GoldGoblet { IsOnGround = false };

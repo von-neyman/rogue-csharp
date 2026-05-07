@@ -3,7 +3,7 @@
 namespace Rogue.Domain.Entities.Items.Scrolls;
 
 /// <summary>
-/// Свиток силы — перманентно увеличивает силу на 1.
+/// Свиток силы — перманентно увеличивает базовую силу.
 /// </summary>
 public class ScrollOfStrength : Scroll
 {
@@ -14,8 +14,10 @@ public class ScrollOfStrength : Scroll
         Symbol = '?';
     }
 
-    public override void Apply(Hero player)
+    public override void Apply(Creature creature)
     {
-        player.Strength += 1;
+        creature.BaseStrength += StatIncrease;
+        if (creature.StrengthBoostTurns > 0) creature.Strength = creature.BaseStrength * 2;
+        else creature.Strength = creature.BaseStrength;
     }
 }

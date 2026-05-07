@@ -3,7 +3,7 @@
 namespace Rogue.Domain.Entities.Items.Scrolls;
 
 /// <summary>
-/// Свиток ловкости — перманентно увеличивает ловкость на 1.
+/// Свиток ловкости — перманентно увеличивает базовую ловкость.
 /// </summary>
 public class ScrollOfAgility : Scroll
 {
@@ -14,8 +14,10 @@ public class ScrollOfAgility : Scroll
         Symbol = '?';
     }
 
-    public override void Apply(Hero player)
+    public override void Apply(Creature creature)
     {
-        player.Agility += 1;
+        creature.BaseAgility += StatIncrease;
+        if (creature.AgilityBoostTurns > 0) creature.Agility = creature.BaseAgility * 2;
+        else creature.Agility = creature.BaseAgility;
     }
 }

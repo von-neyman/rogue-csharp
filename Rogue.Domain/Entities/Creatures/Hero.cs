@@ -5,8 +5,7 @@ namespace Rogue.Domain.Entities.Creatures;
 
 /// <summary>
 /// Главный герой. Управляется игроком.
-/// Стартовые характеристики: сила 4, ловкость 4, здоровье 20.
-/// Может экипировать оружие и носить предметы в инвентаре.
+/// Стартовые характеристики: базовая сила 4, базовая ловкость 4, базовое здоровье 20.
 /// </summary>
 public class Hero : Creature, IInventory, IEquipment
 {
@@ -18,10 +17,13 @@ public class Hero : Creature, IInventory, IEquipment
 
     public Hero()
     {
-        Strength = 4;
-        Agility = 4;
-        MaxHealth = 20;
-        Health = 20;
+        BaseStrength = 4;
+        BaseAgility = 4;
+        BaseMaxHealth = 20;
+        Strength = BaseStrength;
+        Agility = BaseAgility;
+        MaxHealth = BaseMaxHealth;
+        Health = MaxHealth;
         Symbol = '@';
         Inventory = new Inventory();
     }

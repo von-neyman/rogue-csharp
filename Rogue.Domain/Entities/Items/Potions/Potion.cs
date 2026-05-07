@@ -4,13 +4,13 @@ namespace Rogue.Domain.Entities.Items.Potions;
 
 /// <summary>
 /// Базовый класс для зелий.
-/// При использовании временно удваивают одну из характеристик игрока.
+/// При использовании временно удваивают одну из характеристик.
 /// </summary>
 public abstract class Potion : Item
 {
     /// <summary>Длительность эффекта в ходах.</summary>
-    public int Duration => 100;
+    public const int Duration = 100;
 
-    /// <summary>Применить эффект зелья к игроку.</summary>
-    public abstract void Apply(Hero player);
+    /// <summary>Применить эффект зелья к существу.</summary>
+    public abstract void Apply(Creature creature);
 }

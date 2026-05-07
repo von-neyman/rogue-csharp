@@ -15,10 +15,13 @@ public class Vampire : Monster, IRandomWalk, IFirstAttackEvasion, IReducesMaxHea
 
     public Vampire()
     {
-        Strength = 4;
-        Agility = 6;
-        MaxHealth = 30;
-        Health = 30;
+        BaseStrength = 4;
+        BaseAgility = 6;
+        BaseMaxHealth = 30;
+        Strength = BaseStrength;
+        Agility = BaseAgility;
+        MaxHealth = BaseMaxHealth;
+        Health = MaxHealth;
         Hostility = 6;
         Cost = 4;
         TreasureLoot = new GoldGoblet { IsOnGround = false };

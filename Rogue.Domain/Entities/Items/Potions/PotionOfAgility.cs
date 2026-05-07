@@ -14,8 +14,9 @@ public class PotionOfAgility : Potion
         Symbol = '!';
     }
 
-    public override void Apply(Hero player)
+    public override void Apply(Creature creature)
     {
-        // TODO: EffectSystem — удвоение ловкости на Duration ходов
+        creature.AgilityBoostTurns += Duration;
+        creature.Agility = creature.BaseAgility * 2;
     }
 }

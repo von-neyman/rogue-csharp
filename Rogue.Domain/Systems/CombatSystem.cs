@@ -16,15 +16,47 @@ public static class CombatSystem
     /// </summary>
     public static bool Attack(Creature attacker, Creature defender)
     {
-        // Если атакующий перезаряжается — пропускает ход, сбрасываем флаг
-        if (attacker is IRecharge recharge && recharge.IsRecharging)
+        if (!CheckRecharge(attacker)) return false;
+        bool hit = CheckFirstAttackEvasion(defender);
+        if (hit) hit = RollHit(attacker, defender);
+        if (!hit)
         {
-            recharge.IsRecharging = false;
-            return false;
+            CheckCounterAttack(attacker, defender);
+            hit = CheckSwiftStrike(attacker, defender);
         }
-        // Вычисляем модификатор ловкости от оружия (1 если нет оружия)
+        if (hit) hit = CheckParry(attacker, defender);
+        if (hit)
+        {
+            int damage = CalculateDamage(attacker);
+            defender.TakeDamage(damage);
+            CheckSpecialEffects(attacker, defender);
+        }
+        return hit;
+    }
+
+    /// <summary>Если атакующий должен перезаряжаться после атаки — пропускает следующий ход.
+    /// Если атакующий уже перезаряжается - не может атаковать до следующего хода.</summary>
+    private static bool CheckRecharge(Creature attacker)
+    {
+        if (attacker is IRecharge && attacker.SkipTurns > 0) return false;
+        if (attacker is IRecharge) attacker.SkipTurns += 1;
+        return true;
+    }
+
+    /// <summary>Вычислить шанс попадания и выполнить бросок.</summary>
+    private static bool RollHit(Creature attacker, Creature defender)
+    {
+        int agilityMultiplier = GetAgilityMultiplier(attacker);
+        int effectiveAgility = attacker.Agility * agilityMultiplier;
+        int hitChance = effectiveAgility * 100 / (effectiveAgility + defender.Agility);
+        return RandomGenerator.Next(100) < hitChance;
+    }
+
+    /// <summary>Вычислить модификатор ловкости.</summary>
+    private static int GetAgilityMultiplier(Creature creature)
+    {
         int agilityMultiplier = 1;
-        if (attacker is IEquipment equip && equip.EquippedWeapon != null)
+        if (creature is IEquipment equip && equip.EquippedWeapon != null)
         {
             agilityMultiplier = equip.EquippedWeapon switch
             {
@@ -34,52 +66,16 @@ public static class CombatSystem
                 _ => 1
             };
         }
-        // Проверка попадания
-        int effectiveAgility = attacker.Agility * agilityMultiplier;
-        int hitChance = effectiveAgility * 100 / (effectiveAgility + defender.Agility);
-        bool hit = RandomGenerator.Next(100) < hitChance;
-        // После атаки — перезарядка
-        if (attacker is IRecharge attackerRecharge) attackerRecharge.IsRecharging = true;
-        // Уворот: первая атака всегда промах
-        if (defender is IFirstAttackEvasion evasion && !evasion.HasEvaded)
-        {
-            evasion.HasEvaded = true;
-            hit = false;
-        }
-        // Если промах
-        if (!hit)
-        {
-            // Контратака защитника
-            if (defender is IEquipment defenderEquip && defenderEquip.EquippedWeapon is ICounterattack)
-                Attack(defender, attacker);
-            // Стремительная атака: второй шанс
-            if (attacker is IEquipment attackerEquip && attackerEquip.EquippedWeapon is ISwiftStrike)
-            {
-                hit = RandomGenerator.Next(100) < hitChance;
-                if (!hit)
-                {
-                    if (defender is IEquipment defEquip2 && defEquip2.EquippedWeapon is ICounterattack)
-                        Attack(defender, attacker);
-                    return false;
-                }
-            }
-            else return false;
-        }
-        // Попадание — проверка парирования
-        if (defender is IEquipment defEquipParry && defEquipParry.EquippedWeapon is IParry)
-        {
-            if (RandomGenerator.Next(2) == 0)
-            {
-                if (defender is IEquipment defEquipCounter && defEquipCounter.EquippedWeapon is ICounterattack)
-                    Attack(defender, attacker);
-                return false;
-            }
-        }
-        // Расчёт урона
+        return agilityMultiplier;
+    }
+
+    /// <summary>Вычислить модификатор силы.</summary>
+    private static int GetStrengthMultiplier(Creature creature)
+    {
         int strengthMultiplier = 1;
-        if (attacker is IEquipment attackerWeapon && attackerWeapon.EquippedWeapon != null)
+        if (creature is IEquipment equip && equip.EquippedWeapon != null)
         {
-            strengthMultiplier = attackerWeapon.EquippedWeapon switch
+            strengthMultiplier = equip.EquippedWeapon switch
             {
                 ILightWeapon w => w.StrengthMultiplier,
                 IBalancedWeapon w => w.StrengthMultiplier,
@@ -87,18 +83,72 @@ public static class CombatSystem
                 _ => 1
             };
         }
-        int damage = attacker.Strength * strengthMultiplier;
-        // Крит
-        if (attacker is IEquipment attackerCrit && attackerCrit.EquippedWeapon is ICrit)
-            if (RandomGenerator.Next(2) == 0) damage *= 2;
-        // Нанесение урона
-        defender.TakeDamage(damage);
-        // Особые эффекты атакующего
-        if (attacker is IReducesMaxHealth) defender.MaxHealth -= 1;
-        if (attacker is ISleepInducer && RandomGenerator.Next(2) == 0)
+        return strengthMultiplier;
+    }
+
+    /// <summary>Проверка на уворот от первой атаки.</summary>
+    private static bool CheckFirstAttackEvasion(Creature defender)
+    {
+        if (defender is IFirstAttackEvasion evasion && !evasion.HasEvaded)
         {
-            // TODO: EffectSystem — усыпление
+            evasion.HasEvaded = true;
+            return false;
         }
         return true;
+    }
+
+    /// <summary>Проверка на контратаку защитника.</summary>
+    private static void CheckCounterAttack(Creature attacker, Creature defender)
+    {
+        if (defender is IEquipment defenderEquip && defenderEquip.EquippedWeapon is ICounterattack)
+            Attack(defender, attacker);
+    }
+
+    /// <summary>Проверка на стремительную атаку: второй шанс при промахе.</summary>
+    private static bool CheckSwiftStrike(Creature attacker, Creature defender)
+    {
+        if (attacker is IEquipment attackerEquip && attackerEquip.EquippedWeapon is ISwiftStrike)
+        {
+            bool secondHit = RollHit(attacker, defender);
+            if (!secondHit) CheckCounterAttack(attacker, defender);
+            return secondHit;
+        }
+        return false;
+    }
+
+    /// <summary>Проверка парирования: 50% шанс отбить атаку.</summary>
+    private static bool CheckParry(Creature attacker, Creature defender)
+    {
+        if (defender is IEquipment defEquip && defEquip.EquippedWeapon is IParry)
+        {
+            if (RandomGenerator.Next(2) == 0)
+            {
+                CheckCounterAttack(attacker, defender);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /// <summary>Рассчитать урон.</summary>
+    private static int CalculateDamage(Creature attacker)
+    {
+        int strengthMultiplier = GetStrengthMultiplier(attacker);
+        int damage = attacker.Strength * strengthMultiplier;
+        if (attacker is IEquipment attackerEquip && attackerEquip.EquippedWeapon is ICrit && RandomGenerator.Next(2) == 0) damage *= 2;
+        return damage;
+    }
+
+    /// <summary>Проверка на особые эффекты атаки.</summary>
+    private static void CheckSpecialEffects(Creature attacker, Creature defender)
+    {
+        if (attacker is IReducesMaxHealth)
+        {
+            defender.BaseMaxHealth -= 1;
+            if (defender.HealthBoostTurns > 0) defender.MaxHealth = defender.BaseMaxHealth * 2;
+            else defender.MaxHealth = defender.BaseMaxHealth;
+            if (defender.Health > defender.MaxHealth) defender.Health = defender.MaxHealth;
+        }
+        if (attacker is ISleepInducer && RandomGenerator.Next(2) == 0) defender.SkipTurns += 1;
     }
 }
