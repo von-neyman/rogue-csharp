@@ -1,4 +1,13 @@
-﻿namespace Rogue.Domain.Entities.Creatures.Interfaces;
+﻿using Rogue.Domain.Common;
+using Rogue.Domain.World;
+
+namespace Rogue.Domain.Entities.Creatures.Interfaces;
+
+/// <summary>Существо способно перемещаться.</summary>
+public interface ICanMove
+{
+    bool Move(Direction direction, Level level);
+}
 
 /// <summary>Случайное блуждание по комнате.</summary>
 public interface IRandomWalk { }

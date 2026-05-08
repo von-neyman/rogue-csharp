@@ -33,6 +33,7 @@ public static class EntityGenerator
         spawnRoom.IsStartRoom = true;
         var position = GetRandomPosition(spawnRoom);
         level.StartPoint = position;
+        // Игрок будет добавлен в Creatures при создании героя (в GameState)
     }
 
     /// <summary>Размещает выход в случайной свободной клетке комнаты,
@@ -53,28 +54,28 @@ public static class EntityGenerator
     private static void PlaceMonsters(Level level)
     {
         int remainingPool = level.MonsterPool;
-        // Список фабрик для создания монстров — каждый делегат создаёт конкретный тип
         var monsterFactories = new List<Func<Monster>>
-        {
-            () => new Zombie(),
-            () => new Ghost(),
-            () => new SnakeMage(),
-            () => new Vampire(),
-            () => new Ogre()
-        };
+    {
+        () => new Zombie(),
+        () => new Ghost(),
+        () => new SnakeMage(),
+        () => new Vampire(),
+        () => new Ogre()
+    };
         while (remainingPool > 0)
         {
-            // Выбираем случайную фабрику и создаём монстра
             var createMonster = monsterFactories[RandomGenerator.Next(monsterFactories.Count)];
             var monster = createMonster();
             if (monster.Cost > remainingPool) continue;
             Room targetRoom;
             do { targetRoom = level.Rooms[RandomGenerator.Next(level.Rooms.Count)]; } while (targetRoom.IsStartRoom);
             var position = GetRandomPosition(targetRoom);
-            monster.X = position.X;
-            monster.Y = position.Y;
+            var tile = level.Map.GetTile(position.X, position.Y);
+            monster.CurrentTile = tile;
+            tile.CreaturesOnTile.Add(monster);
             targetRoom.Monsters.Add(monster);
             level.Monsters.Add(monster);
+            level.Creatures.Add(monster);
             remainingPool -= monster.Cost;
         }
     }
@@ -92,9 +93,9 @@ public static class EntityGenerator
             {
                 var item = CreateRandomItem();
                 var position = GetRandomPosition(room);
-                item.X = position.X;
-                item.Y = position.Y;
-                item.IsOnGround = true;
+                var tile = level.Map.GetTile(position.X, position.Y);
+                item.CurrentTile = tile;
+                tile.ItemsOnTile.Add(item);
                 room.Items.Add(item);
                 level.Items.Add(item);
             }

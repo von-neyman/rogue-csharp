@@ -1,11 +1,20 @@
-﻿namespace Rogue.Domain.World;
+﻿using Rogue.Domain.Entities.Creatures;
+using Rogue.Domain.Entities.Items;
+
+namespace Rogue.Domain.World;
 
 /// <summary>
-/// Одна клетка карты. Хранит символ для отрисовки, флаги проходимости,
-/// прозрачности (для Ray Casting), а также информацию для тумана войны.
+/// Одна клетка карты. Хранит координаты, символ для отрисовки, флаги проходимости,
+/// прозрачности, информацию для тумана войны и списки сущностей на клетке.
 /// </summary>
 public class Tile
 {
+    /// <summary>Координата X клетки.</summary>
+    public int X { get; set; }
+
+    /// <summary>Координата Y клетки.</summary>
+    public int Y { get; set; }
+
     /// <summary>Символ для отображения на экране.</summary>
     public char Symbol { get; set; }
 
@@ -20,4 +29,10 @@ public class Tile
 
     /// <summary>Видна ли клетка прямо сейчас (в прямой видимости игрока).</summary>
     public bool IsVisible { get; set; }
+
+    /// <summary>Существа, находящиеся на этой клетке.</summary>
+    public List<Creature> CreaturesOnTile { get; set; } = [];
+
+    /// <summary>Предметы, лежащие на этой клетке.</summary>
+    public List<Item> ItemsOnTile { get; set; } = [];
 }

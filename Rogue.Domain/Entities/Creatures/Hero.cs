@@ -1,13 +1,15 @@
-﻿using Rogue.Domain.Entities.Creatures.Interfaces;
+﻿using Rogue.Domain.Common;
+using Rogue.Domain.Entities.Creatures.Interfaces;
 using Rogue.Domain.Entities.Items.Weapons;
+using Rogue.Domain.Systems;
+using Rogue.Domain.World;
 
 namespace Rogue.Domain.Entities.Creatures;
 
 /// <summary>
 /// Главный герой. Управляется игроком.
-/// Стартовые характеристики: базовая сила 4, базовая ловкость 4, базовое здоровье 20.
 /// </summary>
-public class Hero : Creature, IInventory, IEquipment
+public class Hero : Creature, IInventory, IEquipment, ICanMove, ICanAttack
 {
     /// <summary>Инвентарь с предметами.</summary>
     public Inventory Inventory { get; set; }
@@ -17,6 +19,8 @@ public class Hero : Creature, IInventory, IEquipment
 
     public Hero()
     {
+        Name = "Герой";
+        Description = "Искатель приключений.";
         BaseStrength = 4;
         BaseAgility = 4;
         BaseMaxHealth = 20;
@@ -26,5 +30,17 @@ public class Hero : Creature, IInventory, IEquipment
         Health = MaxHealth;
         Symbol = '@';
         Inventory = new Inventory();
+    }
+
+    /// <summary>Атаковать другое существо.</summary>
+    public bool Attack(Creature target)
+    {
+        return CombatSystem.Attack(this, target);
+    }
+
+    /// <summary>Совершить движение в указанном направлении.</summary>
+    public bool Move(Direction direction, Level level)
+    {
+        return MovementSystem.PerformAction(this, direction, level);
     }
 }

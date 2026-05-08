@@ -5,13 +5,14 @@ namespace Rogue.Domain.Entities.Creatures;
 
 /// <summary>
 /// Змей-Маг — стремительный противник с гипнотическим укусом.
-/// Характеристики: сила 4, ловкость 8, здоровье 20, враждебность 6.
 /// Ходит только по диагонали. Атака может усыпить цель (50%).
 /// </summary>
 public class SnakeMage : Monster, IDiagonalWalk, ISleepInducer
 {
     public SnakeMage()
     {
+        Name = "Змей-Маг";
+        Description = "Стремительный противник с гипнотическим укусом.";
         BaseStrength = 4;
         BaseAgility = 8;
         BaseMaxHealth = 20;
@@ -21,7 +22,7 @@ public class SnakeMage : Monster, IDiagonalWalk, ISleepInducer
         Health = MaxHealth;
         Hostility = 6;
         Cost = 4;
-        TreasureLoot = new GoldGoblet { IsOnGround = false };
+        TreasureLoot = new GoldGoblet();
         Symbol = 'S';
     }
 }

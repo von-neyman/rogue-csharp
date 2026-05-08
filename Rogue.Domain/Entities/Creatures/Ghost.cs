@@ -5,14 +5,16 @@ namespace Rogue.Domain.Entities.Creatures;
 
 /// <summary>
 /// Привидение — невидимый телепортирующийся противник.
-/// Характеристики: сила 3, ловкость 6, здоровье 15, враждебность 3.
 /// </summary>
 public class Ghost : Monster, ITeleport, IInvisible
 {
+    /// <summary>Невидимо ли привидение.</summary>
     public bool IsInvisible { get; set; } = true;
 
     public Ghost()
     {
+        Name = "Привидение";
+        Description = "Невидимый телепортирующийся противник.";
         BaseStrength = 3;
         BaseAgility = 6;
         BaseMaxHealth = 15;
@@ -22,7 +24,7 @@ public class Ghost : Monster, ITeleport, IInvisible
         Health = MaxHealth;
         Hostility = 3;
         Cost = 2;
-        TreasureLoot = new GoldPlate { IsOnGround = false };
+        TreasureLoot = new GoldPlate();
         Symbol = 'G';
     }
 }

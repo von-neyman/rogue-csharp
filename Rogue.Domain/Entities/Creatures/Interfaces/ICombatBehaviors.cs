@@ -1,5 +1,11 @@
 ﻿namespace Rogue.Domain.Entities.Creatures.Interfaces;
 
+/// <summary>Существо способно атаковать.</summary>
+public interface ICanAttack
+{
+    bool Attack(Creature target);
+}
+
 /// <summary>После атаки требуется перезарядка (отдых) — следующий ход пропускается.</summary>
 public interface IRecharge { }
 

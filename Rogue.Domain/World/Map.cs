@@ -26,7 +26,7 @@ public class Map
     /// <summary>Получить клетку по координатам.</summary>
     public Tile GetTile(int x, int y) => Tiles[y, x];
 
-    /// <summary>Можно ли пройти по клетке (пол или коридор, не стена).</summary>
+    /// <summary>Можно ли пройти по клетке (координаты в границах карты, пол или коридор, не стена).</summary>
     public bool IsWalkable(int x, int y)
     {
         if (x < 0 || x >= Width || y < 0 || y >= Height) return false;
@@ -38,11 +38,5 @@ public class Map
     {
         if (x < 0 || x >= Width || y < 0 || y >= Height) return false;
         return Tiles[y, x].IsTransparent;
-    }
-
-    /// <summary>Находятся ли координаты в границах карты.</summary>
-    public bool IsInBounds(int x, int y)
-    {
-        return x >= 0 && x < Width && y >= 0 && y < Height;
     }
 }

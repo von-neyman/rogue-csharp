@@ -1,18 +1,10 @@
-﻿using Rogue.Domain.Systems;
-
-namespace Rogue.Domain.Entities.Creatures;
+﻿namespace Rogue.Domain.Entities.Creatures;
 
 /// <summary>
 /// Базовый класс для всех живых существ.
 /// </summary>
-public abstract class Creature
+public abstract class Creature : Entity
 {
-    /// <summary>Позиция X на карте.</summary>
-    public int X { get; set; }
-
-    /// <summary>Позиция Y на карте.</summary>
-    public int Y { get; set; }
-
     /// <summary>Текущее здоровье. При падении до 0 существо погибает.</summary>
     public int Health { get; set; }
 
@@ -49,9 +41,6 @@ public abstract class Creature
     /// <summary>Живо ли существо.</summary>
     public bool IsAlive => Health > 0;
 
-    /// <summary>Символ для отображения на карте.</summary>
-    public char Symbol { get; protected set; }
-
     /// <summary>Получить урон. Health не опускается ниже 0.</summary>
     public void TakeDamage(int amount)
     {
@@ -64,11 +53,5 @@ public abstract class Creature
     {
         Health += amount;
         if (Health > MaxHealth) Health = MaxHealth;
-    }
-
-    /// <summary>Атаковать другое существо.</summary>
-    public bool Attack(Creature target)
-    {
-        return CombatSystem.Attack(this, target);
     }
 }

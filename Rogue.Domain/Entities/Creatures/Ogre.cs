@@ -5,13 +5,14 @@ namespace Rogue.Domain.Entities.Creatures;
 
 /// <summary>
 /// Огр — медленный, но чрезвычайно сильный противник.
-/// Характеристики: сила 8, ловкость 3, здоровье 40, враждебность 4.
 /// Ходит на 2 клетки за ход. После атаки отдыхает следующий ход.
 /// </summary>
 public class Ogre : Monster, IDoubleStepWalk, IRecharge
 {
     public Ogre()
     {
+        Name = "Огр";
+        Description = "Медленный, но чрезвычайно сильный противник.";
         BaseStrength = 8;
         BaseAgility = 3;
         BaseMaxHealth = 40;
@@ -21,7 +22,7 @@ public class Ogre : Monster, IDoubleStepWalk, IRecharge
         Health = MaxHealth;
         Hostility = 4;
         Cost = 2;
-        TreasureLoot = new GoldPlate { IsOnGround = false };
+        TreasureLoot = new GoldPlate();
         Symbol = 'O';
     }
 }

@@ -5,16 +5,18 @@ namespace Rogue.Domain.Entities.Creatures;
 
 /// <summary>
 /// Вампир — ловкий и живучий хищник.
-/// Характеристики: сила 4, ловкость 6, здоровье 30, враждебность 6.
 /// Первая атака по нему всегда промахивается.
 /// При успешной атаке уменьшает максимальное здоровье навсегда.
 /// </summary>
 public class Vampire : Monster, IRandomWalk, IFirstAttackEvasion, IReducesMaxHealth
 {
+    /// <summary>Уклонился ли уже от первого удара в этом бою.</summary>
     public bool HasEvaded { get; set; }
 
     public Vampire()
     {
+        Name = "Вампир";
+        Description = "Ловкий и живучий хищник.";
         BaseStrength = 4;
         BaseAgility = 6;
         BaseMaxHealth = 30;
@@ -24,7 +26,7 @@ public class Vampire : Monster, IRandomWalk, IFirstAttackEvasion, IReducesMaxHea
         Health = MaxHealth;
         Hostility = 6;
         Cost = 4;
-        TreasureLoot = new GoldGoblet { IsOnGround = false };
+        TreasureLoot = new GoldGoblet();
         Symbol = 'V';
     }
 }
