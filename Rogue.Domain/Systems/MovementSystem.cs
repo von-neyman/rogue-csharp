@@ -13,16 +13,21 @@ public static class MovementSystem
     /// <summary>
     /// Выполнить ход существа. Возвращает true, если ход состоялся (движение/атака/бездействие).
     /// </summary>
-    public static bool PerformAction(Creature creature, Direction direction, Level level)
+    public static bool PerformAction(Creature creature, Direction direction)
     {
         if (CheckSkipTurns(creature)) return true;
         if (CheckDirectionNone(creature, direction)) return true;
         (int targetX, int targetY) = GetTargetPosition(creature, direction);
-        if (targetX == -1 || !level.Map.IsWalkable(targetX, targetY)) return false;
-        var targetTile = level.Map.GetTile(targetX, targetY);
+        if (targetX == -1) return false;
+        var targetTile = creature.CurrentTile?.Level?.Map.GetTile(targetX, targetY);
+        if (targetTile == null || !targetTile.IsWalkable) return false;
         var targetCreature = GetCreatureAt(targetTile);
         if (targetCreature != null && creature is ICanAttack attacker) attacker.Attack(targetCreature);
-        else MoveTo(creature, targetTile);
+        else
+        {
+            MoveTo(creature, targetTile);
+            InventorySystem.CollectItems(creature);
+        }
         CheckBoost(creature);
         return true;
     }

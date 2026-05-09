@@ -2,7 +2,6 @@
 using Rogue.Domain.Entities.Creatures.Interfaces;
 using Rogue.Domain.Entities.Items.Treasures;
 using Rogue.Domain.Systems;
-using Rogue.Domain.World;
 
 namespace Rogue.Domain.Entities.Creatures;
 
@@ -11,7 +10,7 @@ namespace Rogue.Domain.Entities.Creatures;
 /// </summary>
 public abstract class Monster : Creature, IHostility, ILoot, ICost, ICanMove, ICanAttack
 {
-    /// <summary>Радиус преследования: расстояние в клетках, с которого монстр начинает преследование.</summary>
+    /// <summary>Радиус преследования.</summary>
     public int Hostility { get; set; }
 
     /// <summary>Сокровище, выпадающее при смерти.</summary>
@@ -21,14 +20,11 @@ public abstract class Monster : Creature, IHostility, ILoot, ICost, ICanMove, IC
     public int Cost { get; set; }
 
     /// <summary>Атаковать другое существо.</summary>
-    public bool Attack(Creature target)
-    {
-        return CombatSystem.Attack(this, target);
-    }
+    public bool Attack(Creature target) => CombatSystem.Attack(this, target);
 
     /// <summary>Совершить движение в указанном направлении.</summary>
-    public bool Move(Direction direction, Level level)
-    {
-        return MovementSystem.PerformAction(this, direction, level);
-    }
+    public bool Move(Direction direction) => MovementSystem.PerformAction(this, direction);
+
+    /// <summary>Выбросить сокровище при смерти.</summary>
+    public void DropLoot() => InventorySystem.DropLoot(this);
 }

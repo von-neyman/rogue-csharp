@@ -1,4 +1,6 @@
-﻿namespace Rogue.Domain.Entities.Creatures;
+﻿using Rogue.Domain.Entities.Creatures.Interfaces;
+
+namespace Rogue.Domain.Entities.Creatures;
 
 /// <summary>
 /// Базовый класс для всех живых существ.
@@ -39,16 +41,21 @@ public abstract class Creature : Entity
     public int SkipTurns { get; set; }
 
     /// <summary>Живо ли существо.</summary>
-    public bool IsAlive => Health > 0;
+    public bool IsAlive { get; set; } = true;
 
-    /// <summary>Получить урон. Health не опускается ниже 0.</summary>
+    /// <summary>Получить урон. Здоровье не опускается ниже 0. Если здоровье упало до 0 — существо умирает.</summary>
     public void TakeDamage(int amount)
     {
         Health -= amount;
-        if (Health < 0) Health = 0;
+        if (Health <= 0)
+        {
+            Health = 0;
+            IsAlive = false;
+            if (this is ILoot loot && loot.TreasureLoot != null) loot.DropLoot();
+        }
     }
 
-    /// <summary>Восстановить здоровье. Не превышает MaxHealth.</summary>
+    /// <summary>Восстановить здоровье. Не превышает максимальное здоровье.</summary>
     public void Heal(int amount)
     {
         Health += amount;

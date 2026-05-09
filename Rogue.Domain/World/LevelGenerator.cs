@@ -23,6 +23,11 @@ public static class LevelGenerator
             Rooms = rooms,
             Corridors = corridors
         };
+        // Привязываем Level ко всем тайлам и карте
+        level.Map.Level = level;
+        for (int y = 0; y < Map.Height; y++)
+            for (int x = 0; x < Map.Width; x++)
+                level.Map.Tiles[y, x].Level = level;
         EntityGenerator.Generate(level);
         return level;
     }

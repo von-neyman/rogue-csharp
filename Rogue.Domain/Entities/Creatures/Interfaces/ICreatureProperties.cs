@@ -25,6 +25,7 @@ public interface IHostility
 public interface ILoot
 {
     Treasure? TreasureLoot { get; set; }
+    void DropLoot();
 }
 
 /// <summary>Существо имеет стоимость в очках пула монстров.</summary>

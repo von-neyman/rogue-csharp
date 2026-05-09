@@ -15,12 +15,15 @@ public class Map
     /// <summary>Двумерный массив клеток [y, x].</summary>
     public Tile[,] Tiles { get; set; }
 
+    /// <summary>Уровень, которому принадлежит карта.</summary>
+    public Level? Level { get; set; }
+
     public Map()
     {
         Tiles = new Tile[Height, Width];
         for (int y = 0; y < Height; y++)
             for (int x = 0; x < Width; x++)
-                Tiles[y, x] = new Tile();
+                Tiles[y, x] = new Tile { X = x, Y = y };
     }
 
     /// <summary>Получить клетку по координатам.</summary>

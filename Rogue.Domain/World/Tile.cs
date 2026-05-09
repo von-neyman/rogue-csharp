@@ -35,4 +35,7 @@ public class Tile
 
     /// <summary>Предметы, лежащие на этой клетке.</summary>
     public List<Item> ItemsOnTile { get; set; } = [];
+
+    /// <summary>Уровень, которому принадлежит клетка.</summary>
+    public Level? Level { get; set; }
 }

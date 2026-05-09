@@ -2,7 +2,6 @@
 using Rogue.Domain.Entities.Creatures.Interfaces;
 using Rogue.Domain.Entities.Items.Weapons;
 using Rogue.Domain.Systems;
-using Rogue.Domain.World;
 
 namespace Rogue.Domain.Entities.Creatures;
 
@@ -33,14 +32,8 @@ public class Hero : Creature, IInventory, IEquipment, ICanMove, ICanAttack
     }
 
     /// <summary>Атаковать другое существо.</summary>
-    public bool Attack(Creature target)
-    {
-        return CombatSystem.Attack(this, target);
-    }
+    public bool Attack(Creature target) => CombatSystem.Attack(this, target);
 
     /// <summary>Совершить движение в указанном направлении.</summary>
-    public bool Move(Direction direction, Level level)
-    {
-        return MovementSystem.PerformAction(this, direction, level);
-    }
+    public bool Move(Direction direction) => MovementSystem.PerformAction(this, direction);
 }
