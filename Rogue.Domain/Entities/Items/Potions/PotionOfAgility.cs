@@ -1,4 +1,5 @@
 ﻿using Rogue.Domain.Entities.Creatures;
+using Rogue.Domain.Systems;
 
 namespace Rogue.Domain.Entities.Items.Potions;
 
@@ -14,9 +15,5 @@ public class PotionOfAgility : Potion
         Symbol = '!';
     }
 
-    public override void Apply(Creature creature)
-    {
-        creature.AgilityBoostTurns += Duration;
-        creature.Agility = creature.BaseAgility * 2;
-    }
+    public override void Apply(Creature creature) => EffectSystem.BoostAgility(creature);
 }

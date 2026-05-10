@@ -142,13 +142,7 @@ public static class CombatSystem
     /// <summary>Проверка на особые эффекты атаки.</summary>
     private static void CheckSpecialEffects(Creature attacker, Creature defender)
     {
-        if (attacker is IReducesMaxHealth)
-        {
-            defender.BaseMaxHealth -= 1;
-            if (defender.HealthBoostTurns > 0) defender.MaxHealth = defender.BaseMaxHealth * 2;
-            else defender.MaxHealth = defender.BaseMaxHealth;
-            if (defender.Health > defender.MaxHealth) defender.Health = defender.MaxHealth;
-        }
-        if (attacker is ISleepInducer && RandomGenerator.Next(2) == 0) defender.SkipTurns += 1;
+        if (attacker is IReducesMaxHealth) EffectSystem.ApplyMaxHealthReduction(defender);
+        if (attacker is ISleepInducer && RandomGenerator.Next(2) == 0) EffectSystem.ApplySleep(defender);
     }
 }

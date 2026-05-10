@@ -1,4 +1,5 @@
 ﻿using Rogue.Domain.Entities.Creatures;
+using Rogue.Domain.Systems;
 
 namespace Rogue.Domain.Entities.Items.Potions;
 
@@ -14,10 +15,5 @@ public class PotionOfHealth : Potion
         Symbol = '!';
     }
 
-    public override void Apply(Creature creature)
-    {
-        creature.HealthBoostTurns += Duration;
-        creature.MaxHealth = creature.BaseMaxHealth * 2;
-        creature.Heal(creature.BaseMaxHealth);
-    }
+    public override void Apply(Creature creature) => EffectSystem.BoostMaxHealth(creature);
 }

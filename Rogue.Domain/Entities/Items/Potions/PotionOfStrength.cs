@@ -1,4 +1,5 @@
 ﻿using Rogue.Domain.Entities.Creatures;
+using Rogue.Domain.Systems;
 
 namespace Rogue.Domain.Entities.Items.Potions;
 
@@ -14,9 +15,5 @@ public class PotionOfStrength : Potion
         Symbol = '!';
     }
 
-    public override void Apply(Creature creature)
-    {
-        creature.StrengthBoostTurns += Duration;
-        creature.Strength = creature.BaseStrength * 2;
-    }
+    public override void Apply(Creature creature) => EffectSystem.BoostStrength(creature);
 }

@@ -1,4 +1,5 @@
-﻿using Rogue.Domain.Entities.Creatures;
+﻿using Rogue.Domain.Entities;
+using Rogue.Domain.Entities.Creatures;
 using Rogue.Domain.Entities.Creatures.Interfaces;
 using Rogue.Domain.Entities.Items;
 using Rogue.Domain.Entities.Items.Food;
@@ -33,8 +34,31 @@ public static class InventorySystem
         }
     }
 
+    /// <summary>Использовать предмет указанного типа из инвентаря по индексу (1-9).</summary>
+    public static bool UseItem<T>(Creature creature, int slotIndex) where T : Item
+    {
+        if (typeof(T) == typeof(Food)) return UseFood(creature, slotIndex);
+        if (typeof(T) == typeof(Potion)) return UsePotion(creature, slotIndex);
+        if (typeof(T) == typeof(Scroll)) return UseScroll(creature, slotIndex);
+        if (typeof(T) == typeof(Weapon)) return EquipWeapon(creature, slotIndex);
+        return false;
+    }
+
+    /// <summary>Выбросить предмет указанного типа из инвентаря по индексу (1-9).</summary>
+    public static bool DropItem<T>(Creature creature, int slotIndex) where T : Item
+    {
+        if (creature is not IInventory inventory) return false;
+        var list = GetItemsList<T>(inventory.Inventory);
+        if (list == null) return false;
+        if (slotIndex < 1 || slotIndex > list.Count) return false;
+        var item = list[slotIndex - 1];
+        list.RemoveAt(slotIndex - 1);
+        PlaceOnGround(item, creature);
+        return true;
+    }
+
     /// <summary>Использовать еду из инвентаря по индексу (1-9).</summary>
-    public static bool UseFood(Creature creature, int slotIndex)
+    private static bool UseFood(Creature creature, int slotIndex)
     {
         if (creature is not IInventory inventory) return false;
         if (slotIndex < 1 || slotIndex > inventory.Inventory.Foods.Count) return false;
@@ -45,7 +69,7 @@ public static class InventorySystem
     }
 
     /// <summary>Использовать зелье из инвентаря по индексу (1-9).</summary>
-    public static bool UsePotion(Creature creature, int slotIndex)
+    private static bool UsePotion(Creature creature, int slotIndex)
     {
         if (creature is not IInventory inventory) return false;
         if (slotIndex < 1 || slotIndex > inventory.Inventory.Potions.Count) return false;
@@ -56,7 +80,7 @@ public static class InventorySystem
     }
 
     /// <summary>Использовать свиток из инвентаря по индексу (1-9).</summary>
-    public static bool UseScroll(Creature creature, int slotIndex)
+    private static bool UseScroll(Creature creature, int slotIndex)
     {
         if (creature is not IInventory inventory) return false;
         if (slotIndex < 1 || slotIndex > inventory.Inventory.Scrolls.Count) return false;
@@ -67,7 +91,7 @@ public static class InventorySystem
     }
 
     /// <summary>Экипировать оружие из инвентаря по индексу (1-9) или убрать оружие (0).</summary>
-    public static bool EquipWeapon(Creature creature, int slotIndex)
+    private static bool EquipWeapon(Creature creature, int slotIndex)
     {
         if (creature is not IInventory inventory || creature is not IEquipment equipment) return false;
         if (slotIndex == 0)
@@ -85,59 +109,15 @@ public static class InventorySystem
         return true;
     }
 
-    /// <summary>Выбросить еду из инвентаря по индексу (1-9).</summary>
-    public static bool DropFood(Creature creature, int slotIndex)
+    /// <summary>Получить список предметов нужного типа из инвентаря.</summary>
+    private static List<T>? GetItemsList<T>(Inventory inventory) where T : Item
     {
-        if (creature is not IInventory inventory) return false;
-        if (slotIndex < 1 || slotIndex > inventory.Inventory.Foods.Count) return false;
-        var food = inventory.Inventory.Foods[slotIndex - 1];
-        inventory.Inventory.Foods.RemoveAt(slotIndex - 1);
-        PlaceOnGround(food, creature);
-        return true;
-    }
-
-    /// <summary>Выбросить зелье из инвентаря по индексу (1-9).</summary>
-    public static bool DropPotion(Creature creature, int slotIndex)
-    {
-        if (creature is not IInventory inventory) return false;
-        if (slotIndex < 1 || slotIndex > inventory.Inventory.Potions.Count) return false;
-        var potion = inventory.Inventory.Potions[slotIndex - 1];
-        inventory.Inventory.Potions.RemoveAt(slotIndex - 1);
-        PlaceOnGround(potion, creature);
-        return true;
-    }
-
-    /// <summary>Выбросить свиток из инвентаря по индексу (1-9).</summary>
-    public static bool DropScroll(Creature creature, int slotIndex)
-    {
-        if (creature is not IInventory inventory) return false;
-        if (slotIndex < 1 || slotIndex > inventory.Inventory.Scrolls.Count) return false;
-        var scroll = inventory.Inventory.Scrolls[slotIndex - 1];
-        inventory.Inventory.Scrolls.RemoveAt(slotIndex - 1);
-        PlaceOnGround(scroll, creature);
-        return true;
-    }
-
-    /// <summary>Выбросить оружие из инвентаря по индексу (1-9).</summary>
-    public static bool DropWeapon(Creature creature, int slotIndex)
-    {
-        if (creature is not IInventory inventory) return false;
-        if (slotIndex < 1 || slotIndex > inventory.Inventory.Weapons.Count) return false;
-        var weapon = inventory.Inventory.Weapons[slotIndex - 1];
-        inventory.Inventory.Weapons.RemoveAt(slotIndex - 1);
-        PlaceOnGround(weapon, creature);
-        return true;
-    }
-
-    /// <summary>Выбросить сокровище из инвентаря по индексу (1-N).</summary>
-    public static bool DropTreasure(Creature creature, int slotIndex)
-    {
-        if (creature is not IInventory inventory) return false;
-        if (slotIndex < 1 || slotIndex > inventory.Inventory.Treasures.Count) return false;
-        var treasure = inventory.Inventory.Treasures[slotIndex - 1];
-        inventory.Inventory.Treasures.RemoveAt(slotIndex - 1);
-        PlaceOnGround(treasure, creature);
-        return true;
+        if (typeof(T) == typeof(Food)) return inventory.Foods as List<T>;
+        if (typeof(T) == typeof(Potion)) return inventory.Potions as List<T>;
+        if (typeof(T) == typeof(Scroll)) return inventory.Scrolls as List<T>;
+        if (typeof(T) == typeof(Weapon)) return inventory.Weapons as List<T>;
+        if (typeof(T) == typeof(Treasure)) return inventory.Treasures as List<T>;
+        return null;
     }
 
     /// <summary>Положить предмет на клетку, где стоит существо.</summary>

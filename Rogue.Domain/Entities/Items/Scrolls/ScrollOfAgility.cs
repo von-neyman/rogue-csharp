@@ -1,4 +1,5 @@
 ﻿using Rogue.Domain.Entities.Creatures;
+using Rogue.Domain.Systems;
 
 namespace Rogue.Domain.Entities.Items.Scrolls;
 
@@ -14,10 +15,5 @@ public class ScrollOfAgility : Scroll
         Symbol = '?';
     }
 
-    public override void Apply(Creature creature)
-    {
-        creature.BaseAgility += StatIncrease;
-        if (creature.AgilityBoostTurns > 0) creature.Agility = creature.BaseAgility * 2;
-        else creature.Agility = creature.BaseAgility;
-    }
+    public override void Apply(Creature creature) => EffectSystem.IncreaseAgility(creature);
 }

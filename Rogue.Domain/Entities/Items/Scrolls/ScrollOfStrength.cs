@@ -1,4 +1,5 @@
 ﻿using Rogue.Domain.Entities.Creatures;
+using Rogue.Domain.Systems;
 
 namespace Rogue.Domain.Entities.Items.Scrolls;
 
@@ -14,10 +15,5 @@ public class ScrollOfStrength : Scroll
         Symbol = '?';
     }
 
-    public override void Apply(Creature creature)
-    {
-        creature.BaseStrength += StatIncrease;
-        if (creature.StrengthBoostTurns > 0) creature.Strength = creature.BaseStrength * 2;
-        else creature.Strength = creature.BaseStrength;
-    }
+    public override void Apply(Creature creature) => EffectSystem.IncreaseStrength(creature);
 }

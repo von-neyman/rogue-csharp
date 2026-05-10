@@ -1,4 +1,5 @@
 ﻿using Rogue.Domain.Entities.Creatures;
+using Rogue.Domain.Systems;
 
 namespace Rogue.Domain.Entities.Items.Scrolls;
 
@@ -14,18 +15,5 @@ public class ScrollOfHealth : Scroll
         Symbol = '?';
     }
 
-    public override void Apply(Creature creature)
-    {
-        creature.BaseMaxHealth += HealthIncrease;
-        if (creature.HealthBoostTurns > 0)
-        {
-            creature.MaxHealth = creature.BaseMaxHealth * 2;
-            creature.Heal(HealthIncrease * 2);
-        }
-        else
-        {
-            creature.MaxHealth = creature.BaseMaxHealth;
-            creature.Heal(HealthIncrease);
-        }
-    }
+    public override void Apply(Creature creature) => EffectSystem.IncreaseMaxHealth(creature);
 }

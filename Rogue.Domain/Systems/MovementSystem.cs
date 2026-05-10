@@ -26,9 +26,9 @@ public static class MovementSystem
         else
         {
             MoveTo(creature, targetTile);
-            InventorySystem.CollectItems(creature);
+            if (creature is IInventory collector) collector.CollectItems();
         }
-        CheckBoost(creature);
+        EffectSystem.TickEffects(creature);
         return true;
     }
 
@@ -64,7 +64,7 @@ public static class MovementSystem
         if (creature.SkipTurns > 0)
         {
             creature.SkipTurns--;
-            CheckBoost(creature);
+            EffectSystem.TickEffects(creature);
             return true;
         }
         return false;
@@ -75,7 +75,7 @@ public static class MovementSystem
     {
         if (direction == Direction.None)
         {
-            CheckBoost(creature);
+            EffectSystem.TickEffects(creature);
             return true;
         }
         return false;
@@ -87,30 +87,5 @@ public static class MovementSystem
         creature.CurrentTile?.CreaturesOnTile.Remove(creature);
         creature.CurrentTile = targetTile;
         targetTile.CreaturesOnTile.Add(creature);
-    }
-
-    /// <summary>Обработка счётчиков эффектов существа.</summary>
-    private static void CheckBoost(Creature creature)
-    {
-        if (creature.StrengthBoostTurns > 0)
-        {
-            creature.StrengthBoostTurns--;
-            if (creature.StrengthBoostTurns == 0) creature.Strength = creature.BaseStrength;
-        }
-        if (creature.AgilityBoostTurns > 0)
-        {
-            creature.AgilityBoostTurns--;
-            if (creature.AgilityBoostTurns == 0) creature.Agility = creature.BaseAgility;
-        }
-        if (creature.HealthBoostTurns > 0)
-        {
-            creature.HealthBoostTurns--;
-            if (creature.HealthBoostTurns == 0)
-            {
-                creature.MaxHealth = creature.BaseMaxHealth;
-                creature.Health -= creature.BaseMaxHealth;
-                if (creature.Health <= 0) creature.Health = 1;
-            }
-        }
     }
 }
