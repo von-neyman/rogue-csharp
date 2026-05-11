@@ -10,6 +10,9 @@ namespace Rogue.Domain.GameState;
 /// </summary>
 public class GameState
 {
+    /// <summary>Событие: игрок перешёл на новый уровень.</summary>
+    public static event Action? OnLevelChanged;
+
     /// <summary>Текущий игрок.</summary>
     public Hero Player { get; set; }
 
@@ -24,6 +27,7 @@ public class GameState
         Player = new Hero();
         Statistics = new GameStatistics();
         CurrentLevel = LevelGenerator.Generate(1);
+        SubscribeToEvents();
         PlacePlayerOnLevel();
     }
 
@@ -35,6 +39,20 @@ public class GameState
         if (!ActionSystem.CreatureAction(Player, ref gameAction)) return;
         ActionSystem.MonstersAction(CurrentLevel);
         CheckLevelTransition();
+    }
+
+    /// <summary>Подписаться на события систем для обновления статистики.</summary>
+    private void SubscribeToEvents()
+    {
+        CombatSystem.OnHitLanded += () => Statistics.HitsLanded++;
+        CombatSystem.OnHitReceived += () => Statistics.HitsReceived++;
+        CombatSystem.OnMonsterDefeated += () => Statistics.MonstersDefeated++;
+        ActionSystem.OnFoodEaten += () => Statistics.FoodEaten++;
+        ActionSystem.OnPotionUsed += () => Statistics.PotionsUsed++;
+        ActionSystem.OnScrollRead += () => Statistics.ScrollsRead++;
+        ActionSystem.OnStepTaken += () => Statistics.StepsTaken++;
+        InventorySystem.OnTreasureCollected += () => Statistics.TreasureCollected = Player.Inventory.TotalTreasureValue;
+        OnLevelChanged += () => Statistics.LevelReached = CurrentLevel.LevelNumber;
     }
 
     /// <summary>Проверить переход на следующий уровень.</summary>
@@ -64,5 +82,6 @@ public class GameState
         Player.CurrentTile = startTile;
         startTile.CreaturesOnTile.Add(Player);
         CurrentLevel.Hero = Player;
+        OnLevelChanged?.Invoke();
     }
 }

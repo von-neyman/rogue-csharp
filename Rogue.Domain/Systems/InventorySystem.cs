@@ -15,6 +15,9 @@ namespace Rogue.Domain.Systems;
 /// </summary>
 public static class InventorySystem
 {
+    /// <summary>Событие: игрок подобрал сокровище.</summary>
+    public static event Action? OnTreasureCollected;
+
     /// <summary>Подобрать все предметы с клетки, на которой стоит существо.</summary>
     public static void CollectItems(Creature creature)
     {
@@ -29,7 +32,10 @@ public static class InventorySystem
                 case Weapon weapon: inventory.Inventory.AddWeapon(weapon); break;
                 case Scroll scroll: inventory.Inventory.AddScroll(scroll); break;
                 case Potion potion: inventory.Inventory.AddPotion(potion); break;
-                case Treasure treasure: inventory.Inventory.AddTreasure(treasure); break;
+                case Treasure treasure:
+                    inventory.Inventory.AddTreasure(treasure);
+                    OnTreasureCollected?.Invoke();
+                    break;
             }
         }
     }

@@ -15,12 +15,23 @@ namespace Rogue.Domain.Systems;
 /// </summary>
 public static class ActionSystem
 {
+    /// <summary>Событие: игрок съел еду.</summary>
+    public static event Action? OnFoodEaten;
+
+    /// <summary>Событие: игрок выпил зелье.</summary>
+    public static event Action? OnPotionUsed;
+
+    /// <summary>Событие: игрок прочитал свиток.</summary>
+    public static event Action? OnScrollRead;
+
+    /// <summary>Событие: игрок сделал шаг.</summary>
+    public static event Action? OnStepTaken;
+
     /// <summary>Выполнить действие существа. Возвращает true, если действие совершено (ход завершён).</summary>
     public static bool CreatureAction(Creature creature, ref GameAction gameAction)
     {
         EffectSystem.TickEffects(creature);
         if (CheckSkipTurns(creature)) gameAction = GameAction.None;
-        // Проверка и сброс отложенных действий, если команда не соответствует цепочке
         if (creature.FirstPendingAction != GameAction.None)
         {
             if (!IsValidPendingChain(creature, gameAction))
@@ -29,16 +40,17 @@ public static class ActionSystem
                 creature.SecondPendingAction = GameAction.None;
             }
         }
-        // Бездействие
         if (gameAction == GameAction.None) return true;
-        // Движение
         if (IsMoveAction(gameAction))
         {
             bool actionSucceeded = MovementSystem.PerformAction(creature, gameAction);
-            if (actionSucceeded) gameAction = GameAction.None;
+            if (actionSucceeded)
+            {
+                UpdateStepStatistics(creature);
+                gameAction = GameAction.None;
+            }
             return actionSucceeded;
         }
-        // Отложенные действия
         return ExecutePendingAction(creature, ref gameAction);
     }
 
@@ -60,14 +72,12 @@ public static class ActionSystem
     /// <summary>Выполнить отложенное действие.</summary>
     private static bool ExecutePendingAction(Creature creature, ref GameAction gameAction)
     {
-        // Если DropItem
         if (gameAction == GameAction.DropItem && creature is IInventory)
         {
             creature.FirstPendingAction = GameAction.DropItem;
             gameAction = GameAction.None;
             return false;
         }
-        // Выбор типа предмета (после DropItem или напрямую)
         if (IsItemTypeAction(gameAction) && creature is IInventory)
         {
             if (creature.FirstPendingAction == GameAction.DropItem) creature.SecondPendingAction = gameAction;
@@ -75,7 +85,6 @@ public static class ActionSystem
             gameAction = GameAction.None;
             return false;
         }
-        // Выбор слота и выполнение
         if (IsSlotAction(gameAction))
         {
             int slotIndex = GetSlotIndex(gameAction);
@@ -83,17 +92,37 @@ public static class ActionSystem
             if (creature.FirstPendingAction == GameAction.DropItem && creature.SecondPendingAction != GameAction.None)
                 pendingActionSucceeded = DropByType(creature, creature.SecondPendingAction, slotIndex);
             else if (IsItemTypeAction(creature.FirstPendingAction))
+            {
                 pendingActionSucceeded = UseByType(creature, creature.FirstPendingAction, slotIndex);
+                if (pendingActionSucceeded) UpdateUsageStatistics(creature, creature.FirstPendingAction);
+            }
             creature.FirstPendingAction = GameAction.None;
             creature.SecondPendingAction = GameAction.None;
             gameAction = GameAction.None;
             return pendingActionSucceeded;
         }
-        // Неизвестная команда — сброс
         creature.FirstPendingAction = GameAction.None;
         creature.SecondPendingAction = GameAction.None;
         gameAction = GameAction.None;
         return false;
+    }
+
+    /// <summary>Обновить статистику шагов.</summary>
+    private static void UpdateStepStatistics(Creature creature)
+    {
+        if (creature is Hero) OnStepTaken?.Invoke();
+    }
+
+    /// <summary>Обновить статистику использования предметов.</summary>
+    private static void UpdateUsageStatistics(Creature creature, GameAction typeAction)
+    {
+        if (creature is not Hero) return;
+        switch (typeAction)
+        {
+            case GameAction.UseFood: OnFoodEaten?.Invoke(); break;
+            case GameAction.UsePotion: OnPotionUsed?.Invoke(); break;
+            case GameAction.UseScroll: OnScrollRead?.Invoke(); break;
+        }
     }
 
     /// <summary>Использовать предмет по типу отложенного действия.</summary>

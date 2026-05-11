@@ -9,6 +9,15 @@ namespace Rogue.Domain.Systems;
 /// </summary>
 public static class CombatSystem
 {
+    /// <summary>Событие: игрок попал по врагу.</summary>
+    public static event Action? OnHitLanded;
+
+    /// <summary>Событие: враг попал по игроку.</summary>
+    public static event Action? OnHitReceived;
+
+    /// <summary>Событие: игрок убил монстра.</summary>
+    public static event Action? OnMonsterDefeated;
+
     private static readonly Random RandomGenerator = new();
 
     /// <summary>
@@ -29,6 +38,7 @@ public static class CombatSystem
         {
             int damage = CalculateDamage(attacker);
             defender.TakeDamage(damage);
+            UpdateStatistics(attacker, defender);
             CheckSpecialEffects(attacker, defender);
         }
         return hit;
@@ -144,5 +154,16 @@ public static class CombatSystem
     {
         if (attacker is IReducesMaxHealth) EffectSystem.ApplyMaxHealthReduction(defender);
         if (attacker is ISleepInducer && RandomGenerator.Next(2) == 0) EffectSystem.ApplySleep(defender);
+    }
+
+    /// <summary>Обновить статистику по результатам атаки.</summary>
+    private static void UpdateStatistics(Creature attacker, Creature defender)
+    {
+        if (attacker is Hero)
+        {
+            OnHitLanded?.Invoke();
+            if (!defender.IsAlive) OnMonsterDefeated?.Invoke();
+        }
+        if (defender is Hero) OnHitReceived?.Invoke();
     }
 }
