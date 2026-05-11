@@ -33,7 +33,6 @@ public static class EntityGenerator
         spawnRoom.IsStartRoom = true;
         var position = GetRandomPosition(spawnRoom);
         level.StartPoint = position;
-        // Игрок будет добавлен в Creatures при создании героя (в GameState)
     }
 
     /// <summary>Размещает выход в случайной свободной клетке комнаты,
@@ -55,13 +54,13 @@ public static class EntityGenerator
     {
         int remainingPool = level.MonsterPool;
         var monsterFactories = new List<Func<Monster>>
-    {
-        () => new Zombie(),
-        () => new Ghost(),
-        () => new SnakeMage(),
-        () => new Vampire(),
-        () => new Ogre()
-    };
+        {
+            () => new Zombie(),
+            () => new Ghost(),
+            () => new SnakeMage(),
+            () => new Vampire(),
+            () => new Ogre()
+        };
         while (remainingPool > 0)
         {
             var createMonster = monsterFactories[RandomGenerator.Next(monsterFactories.Count)];
@@ -75,7 +74,6 @@ public static class EntityGenerator
             tile.CreaturesOnTile.Add(monster);
             targetRoom.Monsters.Add(monster);
             level.Monsters.Add(monster);
-            level.Creatures.Add(monster);
             remainingPool -= monster.Cost;
         }
     }

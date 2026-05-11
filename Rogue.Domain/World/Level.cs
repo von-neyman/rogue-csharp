@@ -5,7 +5,7 @@ namespace Rogue.Domain.World;
 
 /// <summary>
 /// Один уровень (ярус) подземелья. Содержит карту, комнаты, коридоры,
-/// списки всех существ и предметов, а также точки входа и выхода.
+/// списки монстров и предметов, героя, а также точки входа и выхода.
 /// </summary>
 public class Level
 {
@@ -21,8 +21,8 @@ public class Level
     /// <summary>Список всех коридоров на уровне.</summary>
     public List<Corridor> Corridors { get; set; } = [];
 
-    /// <summary>Все существа на уровне.</summary>
-    public List<Creature> Creatures { get; set; } = [];
+    /// <summary>Герой на уровне.</summary>
+    public Hero? Hero { get; set; }
 
     /// <summary>Все монстры на уровне.</summary>
     public List<Monster> Monsters { get; set; } = [];

@@ -1,4 +1,5 @@
-﻿using Rogue.Domain.Entities.Creatures.Interfaces;
+﻿using Rogue.Domain.Common;
+using Rogue.Domain.Entities.Creatures.Interfaces;
 
 namespace Rogue.Domain.Entities.Creatures;
 
@@ -42,6 +43,12 @@ public abstract class Creature : Entity
 
     /// <summary>Живо ли существо.</summary>
     public bool IsAlive { get; set; } = true;
+
+    /// <summary>Первое отложенное действие (например, выбросить предмет).</summary>
+    public GameAction FirstPendingAction { get; set; } = GameAction.None;
+
+    /// <summary>Второе отложенное действие (например, тип предмета для выбрасывания).</summary>
+    public GameAction SecondPendingAction { get; set; } = GameAction.None;
 
     /// <summary>Получить урон. Здоровье не опускается ниже 0. Если здоровье упало до 0 — существо умирает.</summary>
     public void TakeDamage(int amount)

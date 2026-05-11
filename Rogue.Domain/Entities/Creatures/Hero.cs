@@ -35,8 +35,8 @@ public class Hero : Creature, IInventory, IEquipment, ICanMove, ICanAttack
     /// <summary>Атаковать другое существо.</summary>
     public bool Attack(Creature target) => CombatSystem.Attack(this, target);
 
-    /// <summary>Совершить движение в указанном направлении.</summary>
-    public bool Move(Direction direction) => MovementSystem.PerformAction(this, direction);
+    /// <summary>Совершить действие.</summary>
+    public bool Move(GameAction gameAction) => MovementSystem.PerformAction(this, gameAction);
 
     /// <summary>Подобрать все предметы с текущей клетки.</summary>
     public void CollectItems() => InventorySystem.CollectItems(this);
@@ -44,6 +44,6 @@ public class Hero : Creature, IInventory, IEquipment, ICanMove, ICanAttack
     /// <summary>Использовать предмет указанного типа по индексу (1-9).</summary>
     public bool UseItem<T>(int slotIndex) where T : Item => InventorySystem.UseItem<T>(this, slotIndex);
 
-    /// <summary>Выбросить предмет указанного типа по индексу ((1-9).</summary>
+    /// <summary>Выбросить предмет указанного типа по индексу (1-9).</summary>
     public bool DropItem<T>(int slotIndex) where T : Item => InventorySystem.DropItem<T>(this, slotIndex);
 }

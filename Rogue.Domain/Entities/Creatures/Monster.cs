@@ -22,8 +22,8 @@ public abstract class Monster : Creature, IHostility, ILoot, ICost, ICanMove, IC
     /// <summary>Атаковать другое существо.</summary>
     public bool Attack(Creature target) => CombatSystem.Attack(this, target);
 
-    /// <summary>Совершить движение в указанном направлении.</summary>
-    public bool Move(Direction direction) => MovementSystem.PerformAction(this, direction);
+    /// <summary>Совершить действие.</summary>
+    public bool Move(GameAction gameAction) => MovementSystem.PerformAction(this, gameAction);
 
     /// <summary>Выбросить сокровище при смерти.</summary>
     public void DropLoot() => InventorySystem.DropLoot(this);

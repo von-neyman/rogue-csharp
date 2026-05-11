@@ -5,7 +5,7 @@ namespace Rogue.Domain.Entities.Creatures.Interfaces;
 /// <summary>Существо способно перемещаться.</summary>
 public interface ICanMove
 {
-    bool Move(Direction direction);
+    bool Move(GameAction gameAction);
 }
 
 /// <summary>Случайное блуждание по комнате.</summary>
