@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Глефа — тяжёлое оружие. Механики: стремительная атака, контратака.
 /// </summary>
-public class Glaive : Weapon, IHeavyWeapon, ISwiftStrike, ICounterattack
+internal class Glaive : Weapon, IHeavyWeapon, ISwiftStrike, ICounterattack
 {
-    public Glaive()
+    internal Glaive()
     {
         Name = "Глефа";
         Description = "Длинное древко с широким изогнутым лезвием. Колющий выпад сменяется " +

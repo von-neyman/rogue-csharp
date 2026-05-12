@@ -8,12 +8,12 @@ namespace Rogue.Domain.Entities.Creatures;
 /// Первая атака по нему всегда промахивается.
 /// При успешной атаке уменьшает максимальное здоровье навсегда.
 /// </summary>
-public class Vampire : Monster, IRandomWalk, IFirstAttackEvasion, IReducesMaxHealth
+internal class Vampire : Monster, IRandomWalk, IFirstAttackEvasion, IReducesMaxHealth
 {
     /// <summary>Уклонился ли уже от первого удара в этом бою.</summary>
     public bool HasEvaded { get; set; }
 
-    public Vampire()
+    internal Vampire()
     {
         Name = "Вампир";
         Description = "Ловкий и живучий хищник.";

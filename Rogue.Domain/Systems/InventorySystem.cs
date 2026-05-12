@@ -13,13 +13,13 @@ namespace Rogue.Domain.Systems;
 /// <summary>
 /// Система инвентаря: подбор, использование и выбрасывание предметов.
 /// </summary>
-public static class InventorySystem
+internal static class InventorySystem
 {
     /// <summary>Событие: игрок подобрал сокровище.</summary>
-    public static event Action? OnTreasureCollected;
+    internal static event Action? OnTreasureCollected;
 
     /// <summary>Подобрать все предметы с клетки, на которой стоит существо.</summary>
-    public static void CollectItems(Creature creature)
+    internal static void CollectItems(Creature creature)
     {
         if (creature is not IInventory inventory) return;
         if (creature.CurrentTile?.ItemsOnTile == null) return;
@@ -41,7 +41,7 @@ public static class InventorySystem
     }
 
     /// <summary>Использовать предмет указанного типа из инвентаря по индексу (1-9).</summary>
-    public static bool UseItem<T>(Creature creature, int slotIndex) where T : Item
+    internal static bool UseItem<T>(Creature creature, int slotIndex) where T : Item
     {
         if (typeof(T) == typeof(Food)) return UseFood(creature, slotIndex);
         if (typeof(T) == typeof(Potion)) return UsePotion(creature, slotIndex);
@@ -51,7 +51,7 @@ public static class InventorySystem
     }
 
     /// <summary>Выбросить предмет указанного типа из инвентаря по индексу (1-9).</summary>
-    public static bool DropItem<T>(Creature creature, int slotIndex) where T : Item
+    internal static bool DropItem<T>(Creature creature, int slotIndex) where T : Item
     {
         if (creature is not IInventory inventory) return false;
         var list = GetItemsList<T>(inventory.Inventory);
@@ -126,15 +126,40 @@ public static class InventorySystem
         return null;
     }
 
+    /// <summary>Положить предмет на пол рядом с существом, а если некуда — под ним.</summary>
+    private static void PlaceOnGround(Item item, Creature creature)
+    {
+        var currentTile = creature.CurrentTile;
+        if (currentTile == null) return;
+        var directions = new (int dx, int dy)[] { (0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1) };
+        foreach (var (dx, dy) in directions)
+        {
+            int targetX = currentTile.X + dx;
+            int targetY = currentTile.Y + dy;
+            var level = currentTile.Level;
+            if (level?.Map.IsWalkable(targetX, targetY) == true)
+            {
+                var tile = level.Map.GetTile(targetX, targetY);
+                item.CurrentTile = tile;
+                tile.ItemsOnTile.Add(item);
+                return;
+            }
+        }
+        item.CurrentTile = currentTile;
+        currentTile.ItemsOnTile.Add(item);
+    }
+
+    /*
     /// <summary>Положить предмет на клетку, где стоит существо.</summary>
     private static void PlaceOnGround(Item item, Creature creature)
     {
         item.CurrentTile = creature.CurrentTile;
         creature.CurrentTile?.ItemsOnTile.Add(item);
     }
+    */
 
     /// <summary>Выбросить сокровище существа при смерти.</summary>
-    public static void DropLoot(Creature creature)
+    internal static void DropLoot(Creature creature)
     {
         if (creature is not ILoot loot || loot.TreasureLoot == null) return;
         loot.TreasureLoot.CurrentTile = creature.CurrentTile;

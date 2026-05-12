@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Тесак — сбалансированное оружие. Механики: крит, контратака.
 /// </summary>
-public class Cleaver : Weapon, IBalancedWeapon, ICrit, ICounterattack
+internal class Cleaver : Weapon, IBalancedWeapon, ICrit, ICounterattack
 {
-    public Cleaver()
+    internal Cleaver()
     {
         Name = "Тесак";
         Description = "Широкий тяжёлый нож для рубки мяса. Один размашистый удар — " +

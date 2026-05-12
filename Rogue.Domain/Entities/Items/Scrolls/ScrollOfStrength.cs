@@ -6,14 +6,14 @@ namespace Rogue.Domain.Entities.Items.Scrolls;
 /// <summary>
 /// Свиток силы — перманентно увеличивает базовую силу.
 /// </summary>
-public class ScrollOfStrength : Scroll
+internal class ScrollOfStrength : Scroll
 {
-    public ScrollOfStrength()
+    internal ScrollOfStrength()
     {
         Name = "Свиток силы";
         Description = "Пергамент, исписанный рунами. При прочтении сила увеличивается навсегда.";
         Symbol = '?';
     }
 
-    public override void Apply(Creature creature) => EffectSystem.IncreaseStrength(creature);
+    internal override void Apply(Creature creature) => EffectSystem.IncreaseStrength(creature);
 }

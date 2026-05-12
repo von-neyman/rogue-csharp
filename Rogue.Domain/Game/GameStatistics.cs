@@ -1,4 +1,4 @@
-﻿namespace Rogue.Domain.GameState;
+﻿namespace Rogue.Domain.Game;
 
 /// <summary>
 /// Статистика игровой сессии. Собирается во время игры и отображается в таблице лидеров.

@@ -5,4 +5,4 @@
 /// Конкретные свойства определяются интерфейсами веса (ILight/IBalanced/IHeavy)
 /// и механик (ISwiftStrike/ICrit/ICounterattack/IParry).
 /// </summary>
-public abstract class Weapon : Item { }
+internal abstract class Weapon : Item { }

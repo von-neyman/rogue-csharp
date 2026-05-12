@@ -6,9 +6,9 @@ namespace Rogue.Domain.Entities.Creatures;
 /// <summary>
 /// Зомби — неповоротливый, но живучий противник.
 /// </summary>
-public class Zombie : Monster, IRandomWalk
+internal class Zombie : Monster, IRandomWalk
 {
-    public Zombie()
+    internal Zombie()
     {
         Name = "Зомби";
         Description = "Неповоротливый, но живучий противник.";

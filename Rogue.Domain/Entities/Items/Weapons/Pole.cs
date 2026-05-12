@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Шест — тяжёлое оружие. Механики: стремительная атака, парирование.
 /// </summary>
-public class Pole : Weapon, IHeavyWeapon, ISwiftStrike, IParry
+internal class Pole : Weapon, IHeavyWeapon, ISwiftStrike, IParry
 {
-    public Pole()
+    internal Pole()
     {
         Name = "Шест";
         Description = "Длинная окованная палка. Удар одним концом, промах — удар другим. " +

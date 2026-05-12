@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Боевой молот — тяжёлое оружие. Механики: крит, контратака.
 /// </summary>
-public class WarHammer : Weapon, IHeavyWeapon, ICrit, ICounterattack
+internal class WarHammer : Weapon, IHeavyWeapon, ICrit, ICounterattack
 {
-    public WarHammer()
+    internal WarHammer()
     {
         Name = "Боевой молот";
         Description = "Короткая рукоять, массивный боёк. Один оглушающий удар — и если молот " +

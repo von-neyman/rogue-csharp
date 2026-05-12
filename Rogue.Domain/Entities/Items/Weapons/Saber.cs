@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Сабля — лёгкое оружие. Механики: крит, парирование.
 /// </summary>
-public class Saber : Weapon, ILightWeapon, ICrit, IParry
+internal class Saber : Weapon, ILightWeapon, ICrit, IParry
 {
-    public Saber()
+    internal Saber()
     {
         Name = "Сабля";
         Description = "Изогнутый клинок с односторонней заточкой. Быстрый рубящий удар — " +

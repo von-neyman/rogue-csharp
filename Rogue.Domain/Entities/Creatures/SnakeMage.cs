@@ -7,9 +7,9 @@ namespace Rogue.Domain.Entities.Creatures;
 /// Змей-Маг — стремительный противник с гипнотическим укусом.
 /// Ходит только по диагонали. Атака может усыпить цель (50%).
 /// </summary>
-public class SnakeMage : Monster, IDiagonalWalk, ISleepInducer
+internal class SnakeMage : Monster, IDiagonalWalk, ISleepInducer
 {
-    public SnakeMage()
+    internal SnakeMage()
     {
         Name = "Змей-Маг";
         Description = "Стремительный противник с гипнотическим укусом.";

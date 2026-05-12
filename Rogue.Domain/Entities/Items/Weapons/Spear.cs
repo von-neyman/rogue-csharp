@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Копьё — тяжёлое оружие. Механики: контратака, парирование.
 /// </summary>
-public class Spear : Weapon, IHeavyWeapon, ICounterattack, IParry
+internal class Spear : Weapon, IHeavyWeapon, ICounterattack, IParry
 {
-    public Spear()
+    internal Spear()
     {
         Name = "Копьё";
         Description = "Длинное древко с широким наконечником. Один колющий удар. " +

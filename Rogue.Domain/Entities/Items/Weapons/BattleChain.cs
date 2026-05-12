@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Боевой цеп — сбалансированное оружие. Механики: стремительная атака, крит.
 /// </summary>
-public class BattleChain : Weapon, IBalancedWeapon, ISwiftStrike, ICrit
+internal class BattleChain : Weapon, IBalancedWeapon, ISwiftStrike, ICrit
 {
-    public BattleChain()
+    internal BattleChain()
     {
         Name = "Боевой цеп";
         Description = "Шипастое било на цепи с рукоятью. Раскрутил — бросил. " +

@@ -4,11 +4,11 @@
 /// Золотая тарелка — среднее сокровище. Ценность: 2.
 /// Выпадает с привидений и огров.
 /// </summary>
-public class GoldPlate : Treasure
+internal class GoldPlate : Treasure
 {
-    public override int Value => 2;
+    internal override int Value => 2;
 
-    public GoldPlate()
+    internal GoldPlate()
     {
         Name = "Золотая тарелка";
         Description = "Тяжёлая золотая тарелка. Стоит примерно 2 золотых.";

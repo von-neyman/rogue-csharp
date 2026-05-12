@@ -5,7 +5,7 @@ namespace Rogue.Domain.Systems;
 /// <summary>
 /// Построение карты: переносит геометрию комнат и коридоров в матрицу тайлов.
 /// </summary>
-public static class BuildMapSystem
+internal static class BuildMapSystem
 {
     private const char WallChar = '#';
     private const char CorridorChar = '+';
@@ -14,7 +14,7 @@ public static class BuildMapSystem
     private const char ExitChar = '|';
 
     /// <summary>Заполнить карту уровня по данным комнат и коридоров.</summary>
-    public static void Build(Level level)
+    internal static void Build(Level level)
     {
         BackgroundToMap(level.Map);
         RoomsToMap(level);

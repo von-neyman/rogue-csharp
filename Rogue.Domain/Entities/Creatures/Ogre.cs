@@ -7,9 +7,9 @@ namespace Rogue.Domain.Entities.Creatures;
 /// Огр — медленный, но чрезвычайно сильный противник.
 /// Ходит на 2 клетки за ход. После атаки отдыхает следующий ход.
 /// </summary>
-public class Ogre : Monster, IDoubleStepWalk, IRecharge
+internal class Ogre : Monster, IDoubleStepWalk, IRecharge
 {
-    public Ogre()
+    internal Ogre()
     {
         Name = "Огр";
         Description = "Медленный, но чрезвычайно сильный противник.";

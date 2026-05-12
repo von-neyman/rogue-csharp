@@ -6,11 +6,11 @@ namespace Rogue.Domain.Entities.Items.Potions;
 /// Базовый класс для зелий.
 /// При использовании временно удваивают одну из характеристик.
 /// </summary>
-public abstract class Potion : Item
+internal abstract class Potion : Item
 {
     /// <summary>Длительность эффекта в ходах.</summary>
-    public const int Duration = 100;
+    internal const int Duration = 100;
 
     /// <summary>Применить эффект зелья к существу.</summary>
-    public abstract void Apply(Creature creature);
+    internal abstract void Apply(Creature creature);
 }

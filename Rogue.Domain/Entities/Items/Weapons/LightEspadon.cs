@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Лёгкий эспадон — лёгкое оружие. Механики: стремительная атака, парирование.
 /// </summary>
-public class LightEspadon : Weapon, ILightWeapon, ISwiftStrike, IParry
+internal class LightEspadon : Weapon, ILightWeapon, ISwiftStrike, IParry
 {
-    public LightEspadon()
+    internal LightEspadon()
     {
         Name = "Лёгкий эспадон";
         Description = "Длинный двуручный меч из тонкой, гибкой стали. Два стремительных укола " +

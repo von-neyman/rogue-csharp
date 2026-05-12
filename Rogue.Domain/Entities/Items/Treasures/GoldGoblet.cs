@@ -4,11 +4,11 @@
 /// Золотой кубок — самое дорогое сокровище. Ценность: 4.
 /// Выпадает с вампиров и змеев-магов.
 /// </summary>
-public class GoldGoblet : Treasure
+internal class GoldGoblet : Treasure
 {
-    public override int Value => 4;
+    internal override int Value => 4;
 
-    public GoldGoblet()
+    internal GoldGoblet()
     {
         Name = "Золотой кубок";
         Description = "Кубок, достойный короля. Стоит примерно 4 золотых.";

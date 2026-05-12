@@ -8,12 +8,12 @@ namespace Rogue.Domain.Systems;
 /// <summary>
 /// Система передвижения. Обрабатывает движение и атаку существ.
 /// </summary>
-public static class MovementSystem
+internal static class MovementSystem
 {
     /// <summary>
     /// Выполнить движение или атаку существа. Возвращает true, если действие состоялось.
     /// </summary>
-    public static bool PerformAction(Creature creature, GameAction gameAction)
+    internal static bool PerformAction(Creature creature, GameAction gameAction)
     {
         (int targetX, int targetY) = GetTargetPosition(creature, gameAction);
         if (targetX == -1) return false;

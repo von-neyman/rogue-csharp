@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Рапира — лёгкое оружие. Механики: стремительная атака, контратака.
 /// </summary>
-public class Rapier : Weapon, ILightWeapon, ISwiftStrike, ICounterattack
+internal class Rapier : Weapon, ILightWeapon, ISwiftStrike, ICounterattack
 {
-    public Rapier()
+    internal Rapier()
     {
         Name = "Рапира";
         Description = "Тонкий длинный клинок с изящной гардой. Мгновенный колющий выпад — " +

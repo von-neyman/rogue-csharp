@@ -6,52 +6,52 @@ namespace Rogue.Domain.Entities.Creatures;
 /// <summary>
 /// Базовый класс для всех живых существ.
 /// </summary>
-public abstract class Creature : Entity
+internal abstract class Creature : Entity
 {
     /// <summary>Текущее здоровье. При падении до 0 существо погибает.</summary>
-    public int Health { get; set; }
+    internal int Health { get; set; }
 
     /// <summary>Максимальное здоровье с учётом временных эффектов.</summary>
-    public int MaxHealth { get; set; }
+    internal int MaxHealth { get; set; }
 
     /// <summary>Сила с учётом временных эффектов.</summary>
-    public int Strength { get; set; }
+    internal int Strength { get; set; }
 
     /// <summary>Ловкость с учётом временных эффектов.</summary>
-    public int Agility { get; set; }
+    internal int Agility { get; set; }
 
     /// <summary>Базовая максимальное здоровье без временных эффектов.</summary>
-    public int BaseMaxHealth { get; set; }
+    internal int BaseMaxHealth { get; set; }
 
     /// <summary>Базовая сила без временных эффектов.</summary>
-    public int BaseStrength { get; set; }
+    internal int BaseStrength { get; set; }
 
     /// <summary>Базовая ловкость без временных эффектов.</summary>
-    public int BaseAgility { get; set; }
+    internal int BaseAgility { get; set; }
 
     /// <summary>Счётчик ходов до окончания удвоения силы. 0 — эффект не активен.</summary>
-    public int StrengthBoostTurns { get; set; }
+    internal int StrengthBoostTurns { get; set; }
 
     /// <summary>Счётчик ходов до окончания удвоения ловкости. 0 — эффект не активен.</summary>
-    public int AgilityBoostTurns { get; set; }
+    internal int AgilityBoostTurns { get; set; }
 
     /// <summary>Счётчик ходов до окончания удвоения максимального здоровья. 0 — эффект не активен.</summary>
-    public int HealthBoostTurns { get; set; }
+    internal int HealthBoostTurns { get; set; }
 
     /// <summary>Счётчик пропущенных ходов. Если больше 0, существо бездействует.</summary>
-    public int SkipTurns { get; set; }
+    internal int SkipTurns { get; set; }
 
     /// <summary>Живо ли существо.</summary>
-    public bool IsAlive { get; set; } = true;
+    internal bool IsAlive { get; set; } = true;
 
     /// <summary>Первое отложенное действие (например, выбросить предмет).</summary>
-    public GameAction FirstPendingAction { get; set; } = GameAction.None;
+    internal GameAction FirstPendingAction { get; set; } = GameAction.None;
 
     /// <summary>Второе отложенное действие (например, тип предмета для выбрасывания).</summary>
-    public GameAction SecondPendingAction { get; set; } = GameAction.None;
+    internal GameAction SecondPendingAction { get; set; } = GameAction.None;
 
     /// <summary>Получить урон. Здоровье не опускается ниже 0. Если здоровье упало до 0 — существо умирает.</summary>
-    public void TakeDamage(int amount)
+    internal void TakeDamage(int amount)
     {
         Health -= amount;
         if (Health <= 0)
@@ -63,7 +63,7 @@ public abstract class Creature : Entity
     }
 
     /// <summary>Восстановить здоровье. Не превышает максимальное здоровье.</summary>
-    public void Heal(int amount)
+    internal void Heal(int amount)
     {
         Health += amount;
         if (Health > MaxHealth) Health = MaxHealth;

@@ -9,7 +9,7 @@ namespace Rogue.Domain.Entities.Creatures;
 /// <summary>
 /// Главный герой. Управляется игроком.
 /// </summary>
-public class Hero : Creature, IInventory, IEquipment, ICanMove, ICanAttack
+internal class Hero : Creature, IInventory, IEquipment, ICanMove, ICanAttack
 {
     /// <summary>Инвентарь с предметами.</summary>
     public Inventory Inventory { get; set; }
@@ -17,7 +17,7 @@ public class Hero : Creature, IInventory, IEquipment, ICanMove, ICanAttack
     /// <summary>Текущее оружие в руках (null — без оружия).</summary>
     public Weapon? EquippedWeapon { get; set; }
 
-    public Hero()
+    internal Hero()
     {
         Name = "Герой";
         Description = "Искатель приключений.";

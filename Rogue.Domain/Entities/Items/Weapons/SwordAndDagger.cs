@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Шпага и кинжал — лёгкое оружие. Механики: контратака, парирование.
 /// </summary>
-public class SwordAndDagger : Weapon, ILightWeapon, ICounterattack, IParry
+internal class SwordAndDagger : Weapon, ILightWeapon, ICounterattack, IParry
 {
-    public SwordAndDagger()
+    internal SwordAndDagger()
     {
         Name = "Шпага и кинжал";
         Description = "Шпага в ведущей руке для уколов, кинжал во второй — для защиты. " +

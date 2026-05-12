@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Парные кинжалы — лёгкое оружие. Механики: стремительная атака, крит.
 /// </summary>
-public class DaggerPair : Weapon, ILightWeapon, ISwiftStrike, ICrit
+internal class DaggerPair : Weapon, ILightWeapon, ISwiftStrike, ICrit
 {
-    public DaggerPair()
+    internal DaggerPair()
     {
         Name = "Парные кинжалы";
         Description = "Два коротких клинка в обеих руках. Первый кинжал летит в цель — " +

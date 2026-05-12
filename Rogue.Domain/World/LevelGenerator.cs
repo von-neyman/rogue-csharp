@@ -6,10 +6,10 @@ namespace Rogue.Domain.World;
 /// Генератор уровня. Собирает воедино структуру подземелья,
 /// проверку связности (при случайном количестве комнат) и расстановку сущностей.
 /// </summary>
-public static class LevelGenerator
+internal static class LevelGenerator
 {
     /// <summary>Создать полностью готовый уровень с указанным номером.</summary>
-    public static Level Generate(int levelNumber)
+    internal static Level Generate(int levelNumber)
     {
         var rooms = new List<Room>();
         var corridors = new List<Corridor>();

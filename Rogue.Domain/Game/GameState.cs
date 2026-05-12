@@ -1,9 +1,10 @@
 ﻿using Rogue.Domain.Common;
 using Rogue.Domain.Entities.Creatures;
 using Rogue.Domain.Systems;
+using Rogue.Domain.ViewModels;
 using Rogue.Domain.World;
 
-namespace Rogue.Domain.GameState;
+namespace Rogue.Domain.Game;
 
 /// <summary>
 /// Состояние игры. Хранит текущий уровень, игрока, статистику и управляет игровым циклом.
@@ -11,16 +12,22 @@ namespace Rogue.Domain.GameState;
 public class GameState
 {
     /// <summary>Событие: игрок перешёл на новый уровень.</summary>
-    public static event Action? OnLevelChanged;
+    internal static event Action? OnLevelChanged;
 
     /// <summary>Текущий игрок.</summary>
-    public Hero Player { get; set; }
+    internal Hero Player { get; set; }
 
     /// <summary>Текущий уровень.</summary>
-    public Level CurrentLevel { get; set; }
+    internal Level CurrentLevel { get; set; }
 
     /// <summary>Статистика игры.</summary>
-    public GameStatistics Statistics { get; set; }
+    internal GameStatistics Statistics { get; set; }
+
+    /// <summary>Достигнута ли победа.</summary>
+    internal bool IsVictory { get; set; }
+
+    /// <summary>Сообщения лога за текущий ход.</summary>
+    internal List<string> LogMessages { get; set; } = [];
 
     public GameState()
     {
@@ -39,6 +46,63 @@ public class GameState
         if (!ActionSystem.CreatureAction(Player, ref gameAction)) return;
         ActionSystem.MonstersAction(CurrentLevel);
         CheckLevelTransition();
+    }
+
+    /// <summary>Собрать ViewModel для отрисовки.</summary>
+    public GameScreenViewModel GetViewModel()
+    {
+        var viewModel = new GameScreenViewModel
+        {
+            Tiles = BuildTileViewModels(),
+            PlayerStats = BuildPlayerStats(),
+            SessionStatistics = Statistics,
+            SessionLogMessages = LogMessages,
+            IsAlive = Player.IsAlive,
+            SessionVictory = IsVictory
+        };
+        return viewModel;
+    }
+
+    /// <summary>Построить матрицу TileViewModel для отрисовки карты.</summary>
+    private TileViewModel[,] BuildTileViewModels()
+    {
+        var tiles = new TileViewModel[Map.Height, Map.Width];
+        for (int y = 0; y < Map.Height; y++)
+            for (int x = 0; x < Map.Width; x++)
+            {
+                var tile = CurrentLevel.Map.Tiles[y, x];
+                tiles[y, x] = new TileViewModel
+                {
+                    Symbol = GetDisplaySymbol(tile),
+                    IsVisible = tile.IsVisible,
+                    IsExplored = tile.IsExplored
+                };
+            }
+        return tiles;
+    }
+
+    /// <summary>Определить символ для отображения на клетке.</summary>
+    private char GetDisplaySymbol(Tile tile)
+    {
+        if (!tile.IsVisible) return tile.IsExplored ? '#' : ' ';
+        var aliveCreature = tile.CreaturesOnTile.FirstOrDefault(c => c.IsAlive);
+        if (aliveCreature != null) return aliveCreature.Symbol;
+        if (tile.ItemsOnTile.Count > 0) return tile.ItemsOnTile[^1].Symbol;
+        return tile.Symbol;
+    }
+
+    /// <summary>Собрать массив строк статистики игрока.</summary>
+    private string[] BuildPlayerStats()
+    {
+        return
+        [
+            $"Здоровье: {Player.Health}/{Player.MaxHealth}",
+            $"Сила: {Player.Strength}",
+            $"Ловкость: {Player.Agility}",
+            $"Оружие: {(Player.EquippedWeapon?.Name ?? "Кулаки")}",
+            $"Стоимость сокровищ: {Player.Inventory.TotalTreasureValue}",
+            $"Уровень: {CurrentLevel.LevelNumber}"
+        ];
     }
 
     /// <summary>Подписаться на события систем для обновления статистики.</summary>
@@ -68,7 +132,7 @@ public class GameState
         int nextLevel = CurrentLevel.LevelNumber + 1;
         if (nextLevel > 21)
         {
-            // TODO: победа
+            IsVictory = true;
             return;
         }
         CurrentLevel = LevelGenerator.Generate(nextLevel);

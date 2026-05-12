@@ -7,23 +7,23 @@ namespace Rogue.Domain.Systems;
 /// <summary>
 /// Боевая система. Рассчитывает попадание, урон и применяет особые способности существ и оружия.
 /// </summary>
-public static class CombatSystem
+internal static class CombatSystem
 {
     /// <summary>Событие: игрок попал по врагу.</summary>
-    public static event Action? OnHitLanded;
+    internal static event Action? OnHitLanded;
 
     /// <summary>Событие: враг попал по игроку.</summary>
-    public static event Action? OnHitReceived;
+    internal static event Action? OnHitReceived;
 
     /// <summary>Событие: игрок убил монстра.</summary>
-    public static event Action? OnMonsterDefeated;
+    internal static event Action? OnMonsterDefeated;
 
     private static readonly Random RandomGenerator = new();
 
     /// <summary>
     /// Провести атаку attacker по defender. Возвращает true, если атака попала.
     /// </summary>
-    public static bool Attack(Creature attacker, Creature defender)
+    internal static bool Attack(Creature attacker, Creature defender)
     {
         if (!CheckRecharge(attacker)) return false;
         bool hit = CheckFirstAttackEvasion(defender);

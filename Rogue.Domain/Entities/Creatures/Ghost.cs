@@ -6,12 +6,12 @@ namespace Rogue.Domain.Entities.Creatures;
 /// <summary>
 /// Привидение — невидимый телепортирующийся противник.
 /// </summary>
-public class Ghost : Monster, ITeleport, IInvisible
+internal class Ghost : Monster, ITeleport, IInvisible
 {
     /// <summary>Невидимо ли привидение.</summary>
     public bool IsInvisible { get; set; } = true;
 
-    public Ghost()
+    internal Ghost()
     {
         Name = "Привидение";
         Description = "Невидимый телепортирующийся противник.";

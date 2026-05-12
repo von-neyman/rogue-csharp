@@ -7,10 +7,10 @@ namespace Rogue.Domain.World;
 /// Использует поиск в глубину (DFS) по секторам (0-8).
 /// Вызывается только при случайном количестве комнат.
 /// </summary>
-public static class ConnectivityChecker
+internal static class ConnectivityChecker
 {
     /// <summary>Проверить связность всех комнат. Возвращает true, если граф связный.</summary>
-    public static bool Check(List<Room> rooms)
+    internal static bool Check(List<Room> rooms)
     {
         Debug.Assert(rooms.Count >= 3 && rooms.Count <= 9, "Комнат должно быть от 3 до 9");
         // Массив посещённых секторов (индекс = Sector комнаты)

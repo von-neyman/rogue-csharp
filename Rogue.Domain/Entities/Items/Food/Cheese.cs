@@ -3,11 +3,11 @@
 /// <summary>
 /// Сыр — восстанавливает 40% от максимального здоровья.
 /// </summary>
-public class Cheese : Food
+internal class Cheese : Food
 {
-    public override int HealingPercent => 40;
+    internal override int HealingPercent => 40;
 
-    public Cheese()
+    internal Cheese()
     {
         Name = "Сыр";
         Description = "Кусок выдержанного сыра. Запах чувствуется за километр.";

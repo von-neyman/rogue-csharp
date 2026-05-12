@@ -5,7 +5,7 @@ using Rogue.Domain.Entities.Items.Weapons;
 namespace Rogue.Domain.Entities.Creatures.Interfaces;
 
 /// <summary>Существо имеет инвентарь для хранения предметов.</summary>
-public interface IInventory
+internal interface IInventory
 {
     Inventory Inventory { get; set; }
     void CollectItems();
@@ -14,26 +14,26 @@ public interface IInventory
 }
 
 /// <summary>Существо может держать в руках оружие.</summary>
-public interface IEquipment
+internal interface IEquipment
 {
     Weapon? EquippedWeapon { get; set; }
 }
 
 /// <summary>Существо преследует игрока в указанном радиусе.</summary>
-public interface IHostility
+internal interface IHostility
 {
     int Hostility { get; set; }
 }
 
 /// <summary>С существа выпадает добыча при смерти.</summary>
-public interface ILoot
+internal interface ILoot
 {
     Treasure? TreasureLoot { get; set; }
     void DropLoot();
 }
 
 /// <summary>Существо имеет стоимость в очках пула монстров.</summary>
-public interface ICost
+internal interface ICost
 {
     int Cost { get; set; }
 }

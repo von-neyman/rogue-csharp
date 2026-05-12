@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Двуручный меч — тяжёлое оружие. Механики: стремительная атака, крит.
 /// </summary>
-public class Greatsword : Weapon, IHeavyWeapon, ISwiftStrike, ICrit
+internal class Greatsword : Weapon, IHeavyWeapon, ISwiftStrike, ICrit
 {
-    public Greatsword()
+    internal Greatsword()
     {
         Name = "Двуручный меч";
         Description = "Огромный клинок, который держат двумя руками. Замах — и лезвие " +

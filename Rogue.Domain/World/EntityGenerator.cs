@@ -10,13 +10,13 @@ namespace Rogue.Domain.World;
 /// <summary>
 /// Генератор сущностей уровня: расставляет игрока, выход, монстров и предметы по комнатам.
 /// </summary>
-public static class EntityGenerator
+internal static class EntityGenerator
 {
     private static readonly Random RandomGenerator = new();
 
     /// <summary>Главный метод генерации. Заполняет уровень монстрами и предметами,
     /// задаёт точки старта и выхода.</summary>
-    public static void Generate(Level level)
+    internal static void Generate(Level level)
     {
         PlacePlayer(level);
         PlaceExit(level);
@@ -86,7 +86,8 @@ public static class EntityGenerator
         foreach (var room in level.Rooms)
         {
             if (room.IsStartRoom) continue;
-            int itemCount = RandomGenerator.Next(4);
+            int maxItems = level.LevelNumber <= 7 ? 4 : (level.LevelNumber <= 14 ? 3 : 2);
+            int itemCount = RandomGenerator.Next(maxItems);
             for (int i = 0; i < itemCount; i++)
             {
                 var item = CreateRandomItem();

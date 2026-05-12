@@ -13,22 +13,22 @@ namespace Rogue.Domain.Systems;
 /// <summary>
 /// Система действий: обработка команд существ, отложенные действия, ход монстров.
 /// </summary>
-public static class ActionSystem
+internal static class ActionSystem
 {
     /// <summary>Событие: игрок съел еду.</summary>
-    public static event Action? OnFoodEaten;
+    internal static event Action? OnFoodEaten;
 
     /// <summary>Событие: игрок выпил зелье.</summary>
-    public static event Action? OnPotionUsed;
+    internal static event Action? OnPotionUsed;
 
     /// <summary>Событие: игрок прочитал свиток.</summary>
-    public static event Action? OnScrollRead;
+    internal static event Action? OnScrollRead;
 
     /// <summary>Событие: игрок сделал шаг.</summary>
-    public static event Action? OnStepTaken;
+    internal static event Action? OnStepTaken;
 
     /// <summary>Выполнить действие существа. Возвращает true, если действие совершено (ход завершён).</summary>
-    public static bool CreatureAction(Creature creature, ref GameAction gameAction)
+    internal static bool CreatureAction(Creature creature, ref GameAction gameAction)
     {
         EffectSystem.TickEffects(creature);
         if (CheckSkipTurns(creature)) gameAction = GameAction.None;
@@ -152,7 +152,7 @@ public static class ActionSystem
     }
 
     /// <summary>Ход всех монстров на уровне.</summary>
-    public static void MonstersAction(Level level)
+    internal static void MonstersAction(Level level)
     {
         if (level.Hero == null) return;
         var orderedMonsters = level.Monsters.Where(m => m.IsAlive).OrderByDescending(m => m.Agility).ToList();
@@ -170,6 +170,7 @@ public static class ActionSystem
     /// <summary>Определить действие монстра.</summary>
     private static GameAction GetMonsterAction(Monster monster, Hero hero)
     {
+        if (monster is IInvisible invisible && Random.Shared.Next(2) == 0) invisible.IsInvisible = !invisible.IsInvisible;
         // TODO: chase + idle-паттерны
         return Random.Shared.Next(5) switch
         {

@@ -3,11 +3,11 @@
 /// <summary>
 /// Сухарь — восстанавливает 20% от максимального здоровья.
 /// </summary>
-public class Hardtack : Food
+internal class Hardtack : Food
 {
-    public override int HealingPercent => 20;
+    internal override int HealingPercent => 20;
 
-    public Hardtack()
+    internal Hardtack()
     {
         Name = "Сухарь";
         Description = "Чёрствый, но съедобный. В подземелье и этому рад.";

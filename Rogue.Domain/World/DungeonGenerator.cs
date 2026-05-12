@@ -3,7 +3,7 @@
 /// <summary>
 /// Генератор структуры подземелья: создаёт комнаты, связи между ними и коридоры.
 /// </summary>
-public static class DungeonGenerator
+internal static class DungeonGenerator
 {
     // Количество секторов по каждой стороне сетки (3×3)
     private const int RoomsPerSide = 3;
@@ -20,7 +20,7 @@ public static class DungeonGenerator
     private static readonly Random RandomGenerator = new();
 
     /// <summary>Вероятность создания комнаты в каждом секторе в процентах (100 — всегда 9 комнат, 50 — случайно от 3 до 9).</summary>
-    public static int RoomChancePercent { get; set; } = 100;
+    internal static int RoomChancePercent { get; set; } = 100;
 
     // Индексы сторон в массивах Connections и Doors
     private const int Top = 0;
@@ -36,7 +36,7 @@ public static class DungeonGenerator
 
     // Паттерн Pipeline: метод Generate() последовательно вызывает этапы генерации. Каждый этап получает данные от предыдущего и передаёт следующему.
     /// <summary>Главный метод генерации. Заполняет переданные списки комнат и коридоров.</summary>
-    public static void Generate(List<Room> rooms, List<Corridor> corridors)
+    internal static void Generate(List<Room> rooms, List<Corridor> corridors)
     {
         rooms.Clear();
         corridors.Clear();

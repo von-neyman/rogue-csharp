@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Палаш — сбалансированное оружие. Механики: крит, парирование.
 /// </summary>
-public class Broadsword : Weapon, IBalancedWeapon, ICrit, IParry
+internal class Broadsword : Weapon, IBalancedWeapon, ICrit, IParry
 {
-    public Broadsword()
+    internal Broadsword()
     {
         Name = "Палаш";
         Description = "Прямой широкий клинок. Один хорошо поставленный рубящий удар — " +

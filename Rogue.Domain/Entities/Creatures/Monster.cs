@@ -8,7 +8,7 @@ namespace Rogue.Domain.Entities.Creatures;
 /// <summary>
 /// Базовый класс для всех монстров.
 /// </summary>
-public abstract class Monster : Creature, IHostility, ILoot, ICost, ICanMove, ICanAttack
+internal abstract class Monster : Creature, IHostility, ILoot, ICost, ICanMove, ICanAttack
 {
     /// <summary>Радиус преследования.</summary>
     public int Hostility { get; set; }

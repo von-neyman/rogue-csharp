@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Ятаган — сбалансированное оружие. Механики: стремительная атака, контратака.
 /// </summary>
-public class Yatagan : Weapon, IBalancedWeapon, ISwiftStrike, ICounterattack
+internal class Yatagan : Weapon, IBalancedWeapon, ISwiftStrike, ICounterattack
 {
-    public Yatagan()
+    internal Yatagan()
     {
         Name = "Ятаган";
         Description = "Изогнутый вперёд клинок. Рубящий удар идёт по дуге — если лезвие " +

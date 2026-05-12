@@ -7,10 +7,10 @@ namespace Rogue.Domain.Systems;
 /// <summary>
 /// Система эффектов: управление временными и постоянными изменениями характеристик существ.
 /// </summary>
-public static class EffectSystem
+internal static class EffectSystem
 {
     /// <summary>Обработка счётчиков эффектов существа.</summary>
-    public static void TickEffects(Creature creature)
+    internal static void TickEffects(Creature creature)
     {
         if (creature.StrengthBoostTurns > 0)
         {
@@ -35,21 +35,21 @@ public static class EffectSystem
     }
 
     /// <summary>Временно удвоить силу на Duration ходов.</summary>
-    public static void BoostStrength(Creature creature)
+    internal static void BoostStrength(Creature creature)
     {
         creature.StrengthBoostTurns += Potion.Duration;
         creature.Strength = creature.BaseStrength * 2;
     }
 
     /// <summary>Временно удвоить ловкость на Duration ходов.</summary>
-    public static void BoostAgility(Creature creature)
+    internal static void BoostAgility(Creature creature)
     {
         creature.AgilityBoostTurns += Potion.Duration;
         creature.Agility = creature.BaseAgility * 2;
     }
 
     /// <summary>Временно удвоить максимальное здоровье на Duration ходов.</summary>
-    public static void BoostMaxHealth(Creature creature)
+    internal static void BoostMaxHealth(Creature creature)
     {
         creature.HealthBoostTurns += Potion.Duration;
         creature.MaxHealth = creature.BaseMaxHealth * 2;
@@ -57,21 +57,21 @@ public static class EffectSystem
     }
 
     /// <summary>Перманентно увеличить базовую силу.</summary>
-    public static void IncreaseStrength(Creature creature)
+    internal static void IncreaseStrength(Creature creature)
     {
         creature.BaseStrength += Scroll.StatIncrease;
         creature.Strength = creature.StrengthBoostTurns > 0 ? creature.BaseStrength * 2 : creature.BaseStrength;
     }
 
     /// <summary>Перманентно увеличить базовую ловкость.</summary>
-    public static void IncreaseAgility(Creature creature)
+    internal static void IncreaseAgility(Creature creature)
     {
         creature.BaseAgility += Scroll.StatIncrease;
         creature.Agility = creature.AgilityBoostTurns > 0 ? creature.BaseAgility * 2 : creature.BaseAgility;
     }
 
     /// <summary>Перманентно увеличить базовое максимальное здоровье.</summary>
-    public static void IncreaseMaxHealth(Creature creature)
+    internal static void IncreaseMaxHealth(Creature creature)
     {
         creature.BaseMaxHealth += Scroll.HealthIncrease;
         if (creature.HealthBoostTurns > 0)
@@ -87,10 +87,10 @@ public static class EffectSystem
     }
 
     /// <summary>Усыпить существо: пропускает следующий ход.</summary>
-    public static void ApplySleep(Creature creature) => creature.SkipTurns += 1;
+    internal static void ApplySleep(Creature creature) => creature.SkipTurns += 1;
 
     /// <summary>Уменьшить базовое максимальное здоровье на 1.</summary>
-    public static void ApplyMaxHealthReduction(Creature creature)
+    internal static void ApplyMaxHealthReduction(Creature creature)
     {
         creature.BaseMaxHealth -= 1;
         if (creature.HealthBoostTurns > 0) creature.MaxHealth = creature.BaseMaxHealth * 2;

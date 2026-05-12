@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Секира — тяжёлое оружие. Механики: крит, парирование.
 /// </summary>
-public class BattleAxe : Weapon, IHeavyWeapon, ICrit, IParry
+internal class BattleAxe : Weapon, IHeavyWeapon, ICrit, IParry
 {
-    public BattleAxe()
+    internal BattleAxe()
     {
         Name = "Секира";
         Description = "Широкое лезвие на длинной рукояти. Один разрушительный замах — " +

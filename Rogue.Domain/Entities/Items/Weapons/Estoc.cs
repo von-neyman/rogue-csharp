@@ -5,9 +5,9 @@ namespace Rogue.Domain.Entities.Items.Weapons;
 /// <summary>
 /// Эсток — сбалансированное оружие. Механики: стремительная атака, парирование.
 /// </summary>
-public class Estoc : Weapon, IBalancedWeapon, ISwiftStrike, IParry
+internal class Estoc : Weapon, IBalancedWeapon, ISwiftStrike, IParry
 {
-    public Estoc()
+    internal Estoc()
     {
         Name = "Эсток";
         Description = "Гранёный меч без лезвия — только остриё. Два выпада подряд: " +

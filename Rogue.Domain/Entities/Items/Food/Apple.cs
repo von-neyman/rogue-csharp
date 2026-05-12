@@ -3,11 +3,11 @@
 /// <summary>
 /// Яблоко — восстанавливает 30% от максимального здоровья.
 /// </summary>
-public class Apple : Food
+internal class Apple : Food
 {
-    public override int HealingPercent => 30;
+    internal override int HealingPercent => 30;
 
-    public Apple()
+    internal Apple()
     {
         Name = "Яблоко";
         Description = "Свежее, будто только с ветки. Как оно здесь оказалось?";
