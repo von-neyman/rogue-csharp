@@ -12,6 +12,7 @@ internal class PotionOfStrength : Potion
     {
         Name = "Зелье силы";
         Description = "Мутная жидкость, пахнущая железом. Временно удваивает силу.";
+        ShortDescription = $"Удваивает силу на {Potion.Duration} ходов.";
         Symbol = '!';
     }
 

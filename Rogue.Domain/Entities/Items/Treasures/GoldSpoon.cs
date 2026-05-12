@@ -11,7 +11,8 @@ internal class GoldSpoon : Treasure
     internal GoldSpoon()
     {
         Name = "Золотая ложка";
-        Description = "Столовый прибор из чистого золота. Стоит примерно 1 золотой.";
+        Description = "Столовый прибор из чистого золота.";
+        ShortDescription = $"Стоит {Value} золотой.";
         Symbol = '$';
     }
 }

@@ -13,6 +13,7 @@ internal class Ogre : Monster, IDoubleStepWalk, IRecharge
     {
         Name = "Огр";
         Description = "Медленный, но чрезвычайно сильный противник.";
+        ShortDescription = "Монстр.";
         BaseStrength = 8;
         BaseAgility = 3;
         BaseMaxHealth = 40;

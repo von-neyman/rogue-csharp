@@ -11,6 +11,7 @@ internal class Apple : Food
     {
         Name = "Яблоко";
         Description = "Свежее, будто только с ветки. Как оно здесь оказалось?";
+        ShortDescription = $"Восстанавливает {HealingPercent} процентов здоровья.";
         Symbol = '%';
     }
 }

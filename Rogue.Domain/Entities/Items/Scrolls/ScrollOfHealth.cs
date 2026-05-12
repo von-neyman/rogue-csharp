@@ -12,6 +12,7 @@ internal class ScrollOfHealth : Scroll
     {
         Name = "Свиток здоровья";
         Description = "Пергамент, от которого веет теплом. Здоровье увеличивается навсегда.";
+        ShortDescription = $"Увеличивает здоровье на {Scroll.HealthIncrease}.";
         Symbol = '?';
     }
 

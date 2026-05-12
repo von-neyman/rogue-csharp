@@ -18,4 +18,7 @@ internal abstract class Entity
 
     /// <summary>Описание сущности.</summary>
     internal string Description { get; set; } = string.Empty;
+
+    /// <summary>Короткое описание с характеристиками.</summary>
+    internal string ShortDescription { get; set; } = string.Empty;
 }

@@ -11,6 +11,7 @@ internal class Hardtack : Food
     {
         Name = "Сухарь";
         Description = "Чёрствый, но съедобный. В подземелье и этому рад.";
+        ShortDescription = $"Восстанавливает {HealingPercent} процентов здоровья.";
         Symbol = '%';
     }
 }

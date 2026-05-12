@@ -11,6 +11,7 @@ internal class SmokedMeat : Food
     {
         Name = "Копчёное мясо";
         Description = "Полоска копчёной говядины. Пахнет дымком и специями.";
+        ShortDescription = $"Восстанавливает {HealingPercent} процентов здоровья.";
         Symbol = '%';
     }
 }

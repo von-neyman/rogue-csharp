@@ -11,7 +11,8 @@ internal class GoldPlate : Treasure
     internal GoldPlate()
     {
         Name = "Золотая тарелка";
-        Description = "Тяжёлая золотая тарелка. Стоит примерно 2 золотых.";
+        Description = "Тяжёлая золотая тарелка.";
+        ShortDescription = $"Стоит {Value} золотых.";
         Symbol = '$';
     }
 }

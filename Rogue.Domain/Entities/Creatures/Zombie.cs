@@ -12,6 +12,7 @@ internal class Zombie : Monster, IRandomWalk
     {
         Name = "Зомби";
         Description = "Неповоротливый, но живучий противник.";
+        ShortDescription = "Монстр.";
         BaseStrength = 4;
         BaseAgility = 3;
         BaseMaxHealth = 30;

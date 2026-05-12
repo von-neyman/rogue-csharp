@@ -15,6 +15,7 @@ internal class Ghost : Monster, ITeleport, IInvisible
     {
         Name = "Привидение";
         Description = "Невидимый телепортирующийся противник.";
+        ShortDescription = "Монстр.";
         BaseStrength = 3;
         BaseAgility = 6;
         BaseMaxHealth = 15;

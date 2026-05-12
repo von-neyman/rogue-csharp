@@ -17,6 +17,7 @@ internal class Vampire : Monster, IRandomWalk, IFirstAttackEvasion, IReducesMaxH
     {
         Name = "Вампир";
         Description = "Ловкий и живучий хищник.";
+        ShortDescription = "Монстр.";
         BaseStrength = 4;
         BaseAgility = 6;
         BaseMaxHealth = 30;

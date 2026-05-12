@@ -11,7 +11,8 @@ internal class GoldGoblet : Treasure
     internal GoldGoblet()
     {
         Name = "Золотой кубок";
-        Description = "Кубок, достойный короля. Стоит примерно 4 золотых.";
+        Description = "Кубок, достойный короля.";
+        ShortDescription = $"Стоит {Value} золотых.";
         Symbol = '$';
     }
 }

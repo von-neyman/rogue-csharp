@@ -12,6 +12,7 @@ internal class PotionOfHealth : Potion
     {
         Name = "Зелье здоровья";
         Description = "Густая алая жидкость. Временно удваивает максимальное здоровье.";
+        ShortDescription = $"Удваивает здоровье на {Potion.Duration} ходов.";
         Symbol = '!';
     }
 

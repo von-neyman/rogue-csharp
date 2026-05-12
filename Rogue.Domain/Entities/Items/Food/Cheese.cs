@@ -11,6 +11,7 @@ internal class Cheese : Food
     {
         Name = "Сыр";
         Description = "Кусок выдержанного сыра. Запах чувствуется за километр.";
+        ShortDescription = $"Восстанавливает {HealingPercent} процентов здоровья.";
         Symbol = '%';
     }
 }

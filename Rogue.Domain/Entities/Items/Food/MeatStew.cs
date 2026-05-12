@@ -11,6 +11,7 @@ internal class MeatStew : Food
     {
         Name = "Горшочек жаркого";
         Description = "Глиняный горшочек с горячим мясом и подливой. Откуда это здесь?";
+        ShortDescription = $"Восстанавливает {HealingPercent} процентов здоровья.";
         Symbol = '%';
     }
 }

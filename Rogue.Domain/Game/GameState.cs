@@ -43,9 +43,11 @@ public class GameState
     /// </summary>
     public void DoAction(GameAction gameAction)
     {
+        if (!Player.IsAlive || IsVictory) return;
         if (!ActionSystem.CreatureAction(Player, ref gameAction)) return;
         ActionSystem.MonstersAction(CurrentLevel);
         CheckLevelTransition();
+        CheckGameEnd();
     }
 
     /// <summary>Собрать ViewModel для отрисовки.</summary>
@@ -61,6 +63,19 @@ public class GameState
             SessionVictory = IsVictory
         };
         return viewModel;
+    }
+
+    /// <summary>Собрать ViewModel для отображения инвентаря.</summary>
+    public InventoryViewModel GetInventoryViewModel()
+    {
+        return new InventoryViewModel
+        {
+            FoodItems = Player.Inventory.Foods.Select(f => $"{f.Name}. {f.ShortDescription}").ToList(),
+            PotionItems = Player.Inventory.Potions.Select(p => $"{p.Name}. {p.ShortDescription}").ToList(),
+            ScrollItems = Player.Inventory.Scrolls.Select(s => $"{s.Name}. {s.ShortDescription}").ToList(),
+            WeaponItems = Player.Inventory.Weapons.Select(w => $"{w.Name}. {w.ShortDescription}").ToList(),
+            TreasureItems = Player.Inventory.Treasures.Select(t => $"{t.Name}. {t.ShortDescription}").ToList()
+        };
     }
 
     /// <summary>Построить матрицу TileViewModel для отрисовки карты.</summary>
@@ -147,5 +162,14 @@ public class GameState
         startTile.CreaturesOnTile.Add(Player);
         CurrentLevel.Hero = Player;
         OnLevelChanged?.Invoke();
+    }
+
+    /// <summary>Проверить окончание игры и сохранить статистику.</summary>
+    private void CheckGameEnd()
+    {
+        if (!Player.IsAlive || IsVictory)
+        {
+            // TODO: сохранить статистику через ISaveLoadService.SaveLeaderboard
+        }
     }
 }
