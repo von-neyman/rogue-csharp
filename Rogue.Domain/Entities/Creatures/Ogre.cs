@@ -1,4 +1,5 @@
-﻿using Rogue.Domain.Entities.Creatures.Interfaces;
+﻿using Rogue.Domain.Common;
+using Rogue.Domain.Entities.Creatures.Interfaces;
 using Rogue.Domain.Entities.Items.Treasures;
 
 namespace Rogue.Domain.Entities.Creatures;
@@ -14,6 +15,7 @@ internal class Ogre : Monster, IDoubleStepWalk, IRecharge
         Name = "Огр";
         Description = "Медленный, но чрезвычайно сильный противник.";
         ShortDescription = "Монстр.";
+        Faction = Faction.DungeonMonsters;
         BaseStrength = 8;
         BaseAgility = 3;
         BaseMaxHealth = 40;

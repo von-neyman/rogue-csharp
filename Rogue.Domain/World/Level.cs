@@ -4,8 +4,7 @@ using Rogue.Domain.Entities.Items;
 namespace Rogue.Domain.World;
 
 /// <summary>
-/// Один уровень (ярус) подземелья. Содержит карту, комнаты, коридоры,
-/// списки монстров и предметов, героя, а также точки входа и выхода.
+/// Один уровень (ярус) подземелья.
 /// </summary>
 internal class Level
 {
@@ -24,8 +23,11 @@ internal class Level
     /// <summary>Герой на уровне.</summary>
     internal Hero? Hero { get; set; }
 
-    /// <summary>Все монстры на уровне.</summary>
-    internal List<Monster> Monsters { get; set; } = [];
+    /// <summary>Отряд героя (герой и союзники).</summary>
+    internal List<Creature> HeroParty { get; set; } = [];
+
+    /// <summary>Монстры подземелья.</summary>
+    internal List<Creature> DungeonMonsters { get; set; } = [];
 
     /// <summary>Все предметы.</summary>
     internal List<Item> Items { get; set; } = [];

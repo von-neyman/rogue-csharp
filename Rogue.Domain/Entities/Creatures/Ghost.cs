@@ -1,4 +1,5 @@
-﻿using Rogue.Domain.Entities.Creatures.Interfaces;
+﻿using Rogue.Domain.Common;
+using Rogue.Domain.Entities.Creatures.Interfaces;
 using Rogue.Domain.Entities.Items.Treasures;
 
 namespace Rogue.Domain.Entities.Creatures;
@@ -16,6 +17,7 @@ internal class Ghost : Monster, ITeleport, IInvisible
         Name = "Привидение";
         Description = "Невидимый телепортирующийся противник.";
         ShortDescription = "Монстр.";
+        Faction = Faction.DungeonMonsters;
         BaseStrength = 3;
         BaseAgility = 6;
         BaseMaxHealth = 15;

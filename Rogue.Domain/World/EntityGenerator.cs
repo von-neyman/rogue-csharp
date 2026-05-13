@@ -54,13 +54,13 @@ internal static class EntityGenerator
     {
         int remainingPool = level.MonsterPool;
         var monsterFactories = new List<Func<Monster>>
-        {
-            () => new Zombie(),
-            () => new Ghost(),
-            () => new SnakeMage(),
-            () => new Vampire(),
-            () => new Ogre()
-        };
+    {
+        () => new Zombie(),
+        () => new Ghost(),
+        () => new SnakeMage(),
+        () => new Vampire(),
+        () => new Ogre()
+    };
         while (remainingPool > 0)
         {
             var createMonster = monsterFactories[RandomGenerator.Next(monsterFactories.Count)];
@@ -72,8 +72,8 @@ internal static class EntityGenerator
             var tile = level.Map.GetTile(position.X, position.Y);
             monster.CurrentTile = tile;
             tile.CreaturesOnTile.Add(monster);
-            targetRoom.Monsters.Add(monster);
-            level.Monsters.Add(monster);
+            targetRoom.CreaturesInRoom.Add(monster);
+            level.DungeonMonsters.Add(monster);
             remainingPool -= monster.Cost;
         }
     }
@@ -95,7 +95,7 @@ internal static class EntityGenerator
                 var tile = level.Map.GetTile(position.X, position.Y);
                 item.CurrentTile = tile;
                 tile.ItemsOnTile.Add(item);
-                room.Items.Add(item);
+                room.ItemsInRoom.Add(item);
                 level.Items.Add(item);
             }
         }

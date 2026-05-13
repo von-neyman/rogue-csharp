@@ -15,16 +15,28 @@ internal static class MovementSystem
     /// </summary>
     internal static bool PerformAction(Creature creature, GameAction gameAction)
     {
-        (int targetX, int targetY) = GetTargetPosition(creature, gameAction);
-        if (targetX == -1) return false;
-        var targetTile = creature.CurrentTile?.Level?.Map.GetTile(targetX, targetY);
-        if (targetTile == null || !targetTile.IsWalkable) return false;
-        var targetCreature = GetCreatureAt(targetTile);
-        if (targetCreature != null && creature is ICanAttack attacker) attacker.Attack(targetCreature);
-        else
+        int stepsAvailable = GetMaxSteps(creature);
+        GameAction initialAction = gameAction;
+        while (stepsAvailable > 0)
         {
-            MoveTo(creature, targetTile);
-            if (creature is IInventory collector) collector.CollectItems();
+            (int targetX, int targetY) = GetTargetPosition(creature, gameAction);
+            if (targetX == -1) return false;
+            var targetTile = creature.CurrentTile?.Level?.Map.GetTile(targetX, targetY);
+            if (targetTile == null || !targetTile.IsWalkable) return DidAnyStep(stepsAvailable, creature);
+            var targetCreature = GetCreatureAt(targetTile);
+            if (targetCreature != null && creature is ICanAttack attacker)
+            {
+                if (AreNotEnemies(creature, targetCreature)) return DidAnyStep(stepsAvailable, creature);
+                attacker.Attack(targetCreature);
+                stepsAvailable = 0;
+            }
+            else
+            {
+                MoveTo(creature, targetTile);
+                if (creature is IInventory collector) collector.CollectItems();
+                stepsAvailable--;
+                gameAction = initialAction;
+            }
         }
         return true;
     }
@@ -53,6 +65,24 @@ internal static class MovementSystem
     private static Creature? GetCreatureAt(Tile tile)
     {
         return tile.CreaturesOnTile.FirstOrDefault(c => c.IsAlive);
+    }
+
+    /// <summary>Получить максимальное количество шагов для существа.</summary>
+    private static int GetMaxSteps(Creature creature)
+    {
+        return creature is IDoubleStepWalk ? 2 : 1;
+    }
+
+    /// <summary>Проверить, был ли сделан хотя бы один шаг.</summary>
+    private static bool DidAnyStep(int stepsAvailable, Creature creature)
+    {
+        return stepsAvailable < GetMaxSteps(creature);
+    }
+
+    /// <summary>Проверить, что два существа не являются врагами.</summary>
+    private static bool AreNotEnemies(Creature first, Creature second)
+    {
+        return RelationSystem.GetRelation(first.Faction, second.Faction) != Relation.Hostile;
     }
 
     /// <summary>Переместить существо на указанную клетку. Обновляет списки существ на тайлах.</summary>

@@ -155,33 +155,33 @@ internal static class ActionSystem
     internal static void MonstersAction(Level level)
     {
         if (level.Hero == null) return;
-        var orderedMonsters = level.Monsters.Where(m => m.IsAlive).OrderByDescending(m => m.Agility).ToList();
+        var orderedMonsters = level.DungeonMonsters.OfType<Monster>().Where(m => m.IsAlive).OrderByDescending(m => m.Agility).ToList();
         foreach (var monster in orderedMonsters)
         {
             if (!monster.IsAlive) continue;
-            GameAction monsterAction = GetMonsterAction(monster, level.Hero);
+            ToggleInvisibility(monster);
+            var failedDirections = new List<GameAction>();
+            GameAction monsterAction = AISystem.GetCreatureAction(monster, failedDirections);
             while (!CreatureAction(monster, ref monsterAction))
             {
-                monsterAction = GetMonsterAction(monster, level.Hero);
+                failedDirections.Add(monsterAction);
+                monsterAction = AISystem.GetCreatureAction(monster, failedDirections);
+                if (monsterAction == GameAction.None)
+                {
+                    CreatureAction(monster, ref monsterAction);
+                    break;
+                }
             }
         }
     }
 
-    /// <summary>Определить действие монстра.</summary>
-    private static GameAction GetMonsterAction(Monster monster, Hero hero)
+    /// <summary>Переключить невидимость для существ с IInvisible.</summary>
+    private static void ToggleInvisibility(Monster monster)
     {
         if (monster is IInvisible invisible && Random.Shared.Next(2) == 0) invisible.IsInvisible = !invisible.IsInvisible;
-        // TODO: chase + idle-паттерны
-        return Random.Shared.Next(5) switch
-        {
-            0 => GameAction.None,
-            1 => GameAction.MoveUp,
-            2 => GameAction.MoveDown,
-            3 => GameAction.MoveLeft,
-            _ => GameAction.MoveRight
-        };
     }
 
+    /// <summary>Проверить, пропускает ли существо ход.</summary>
     private static bool CheckSkipTurns(Creature creature)
     {
         if (creature.SkipTurns > 0)
@@ -192,6 +192,7 @@ internal static class ActionSystem
         return false;
     }
 
+    /// <summary>Является ли действие движением.</summary>
     private static bool IsMoveAction(GameAction gameAction)
     {
         return gameAction == GameAction.MoveUp || gameAction == GameAction.MoveDown
@@ -200,17 +201,20 @@ internal static class ActionSystem
             || gameAction == GameAction.MoveDownLeft || gameAction == GameAction.MoveDownRight;
     }
 
+    /// <summary>Является ли действие использованием предмета.</summary>
     private static bool IsItemTypeAction(GameAction gameAction)
     {
         return gameAction == GameAction.UseFood || gameAction == GameAction.UsePotion
             || gameAction == GameAction.UseScroll || gameAction == GameAction.UseWeapon;
     }
 
+    /// <summary>Является ли действие выбором слота.</summary>
     private static bool IsSlotAction(GameAction gameAction)
     {
         return gameAction >= GameAction.SelectSlot0 && gameAction <= GameAction.SelectSlot9;
     }
 
+    /// <summary>Получить индекс слота из действия выбора.</summary>
     private static int GetSlotIndex(GameAction gameAction)
     {
         return gameAction switch

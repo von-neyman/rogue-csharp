@@ -161,6 +161,7 @@ public class GameState
         Player.CurrentTile = startTile;
         startTile.CreaturesOnTile.Add(Player);
         CurrentLevel.Hero = Player;
+        CurrentLevel.HeroParty.Add(Player);
         OnLevelChanged?.Invoke();
     }
 

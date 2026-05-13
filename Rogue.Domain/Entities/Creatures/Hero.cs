@@ -22,6 +22,7 @@ internal class Hero : Creature, IInventory, IEquipment, ICanMove, ICanAttack
         Name = "Герой";
         Description = "Искатель приключений.";
         ShortDescription = "Это вы.";
+        Faction = Faction.HeroParty;
         BaseStrength = 4;
         BaseAgility = 4;
         BaseMaxHealth = 20;

@@ -1,4 +1,5 @@
-﻿using Rogue.Domain.Entities.Creatures.Interfaces;
+﻿using Rogue.Domain.Common;
+using Rogue.Domain.Entities.Creatures.Interfaces;
 using Rogue.Domain.Entities.Items.Treasures;
 
 namespace Rogue.Domain.Entities.Creatures;
@@ -18,6 +19,7 @@ internal class Vampire : Monster, IRandomWalk, IFirstAttackEvasion, IReducesMaxH
         Name = "Вампир";
         Description = "Ловкий и живучий хищник.";
         ShortDescription = "Монстр.";
+        Faction = Faction.DungeonMonsters;
         BaseStrength = 4;
         BaseAgility = 6;
         BaseMaxHealth = 30;

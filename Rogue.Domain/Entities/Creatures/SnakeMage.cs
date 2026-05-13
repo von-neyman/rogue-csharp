@@ -1,4 +1,5 @@
-﻿using Rogue.Domain.Entities.Creatures.Interfaces;
+﻿using Rogue.Domain.Common;
+using Rogue.Domain.Entities.Creatures.Interfaces;
 using Rogue.Domain.Entities.Items.Treasures;
 
 namespace Rogue.Domain.Entities.Creatures;
@@ -14,6 +15,7 @@ internal class SnakeMage : Monster, IDiagonalWalk, ISleepInducer
         Name = "Змей-Маг";
         Description = "Стремительный противник с гипнотическим укусом.";
         ShortDescription = "Монстр.";
+        Faction = Faction.DungeonMonsters;
         BaseStrength = 4;
         BaseAgility = 8;
         BaseMaxHealth = 20;

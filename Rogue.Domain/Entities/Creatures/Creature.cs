@@ -44,6 +44,9 @@ internal abstract class Creature : Entity
     /// <summary>Живо ли существо.</summary>
     internal bool IsAlive { get; set; } = true;
 
+    /// <summary>Фракция существа.</summary>
+    internal Faction Faction { get; set; }
+
     /// <summary>Первое отложенное действие (например, выбросить предмет).</summary>
     internal GameAction FirstPendingAction { get; set; } = GameAction.None;
 

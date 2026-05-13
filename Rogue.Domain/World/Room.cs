@@ -5,7 +5,6 @@ namespace Rogue.Domain.World;
 
 /// <summary>
 /// Комната подземелья. Прямоугольная область, ограниченная стенами.
-/// Содержит списки монстров и предметов, а также координаты дверей.
 /// </summary>
 internal class Room
 {
@@ -24,22 +23,19 @@ internal class Room
     /// <summary>Правый нижний угол комнаты.</summary>
     internal (int X, int Y) BottomRight { get; set; }
 
-    /// <summary>Координаты дверей: [0] верх, [1] право, [2] низ, [3] лево.
-    /// Если двери нет — координаты (-1, -1).</summary>
+    /// <summary>Координаты дверей: [0] верх, [1] право, [2] низ, [3] лево. Если двери нет — (-1, -1).</summary>
     internal (int X, int Y)[] Doors { get; set; } = new (int, int)[4];
 
-    /// <summary>Связи с соседними комнатами: [0] верх, [1] право, [2] низ, [3] лево.
-    /// null — связи нет.</summary>
+    /// <summary>Связи с соседними комнатами: [0] верх, [1] право, [2] низ, [3] лево. null — связи нет.</summary>
     internal Room?[] Connections { get; set; } = new Room?[4];
 
-    /// <summary>Монстры, находящиеся в комнате.</summary>
-    internal List<Monster> Monsters { get; set; } = [];
+    /// <summary>Существа, находящиеся в комнате.</summary>
+    internal List<Creature> CreaturesInRoom { get; set; } = [];
 
     /// <summary>Предметы на полу в комнате.</summary>
-    internal List<Item> Items { get; set; } = [];
+    internal List<Item> ItemsInRoom { get; set; } = [];
 
-    /// <summary>Занятые позиции в комнате (игрок, выход, монстры, предметы).
-    /// Используется при генерации для исключения накладок.</summary>
+    /// <summary>Занятые позиции в комнате. Используется при генерации для исключения накладок.</summary>
     internal List<(int X, int Y)> OccupiedPositions { get; set; } = [];
 
     /// <summary>Является ли комната стартовой (игрок появляется здесь).</summary>
