@@ -69,7 +69,7 @@ internal static class EntityGenerator
             Room targetRoom;
             do { targetRoom = level.Rooms[RandomGenerator.Next(level.Rooms.Count)]; } while (targetRoom.IsStartRoom);
             var position = GetRandomPosition(targetRoom);
-            var tile = level.Map.GetTile(position.X, position.Y);
+            var tile = level.Map.GetTile(position.X, position.Y)!;
             monster.CurrentTile = tile;
             tile.CreaturesOnTile.Add(monster);
             targetRoom.CreaturesInRoom.Add(monster);
@@ -92,7 +92,7 @@ internal static class EntityGenerator
             {
                 var item = CreateRandomItem();
                 var position = GetRandomPosition(room);
-                var tile = level.Map.GetTile(position.X, position.Y);
+                var tile = level.Map.GetTile(position.X, position.Y)!;
                 item.CurrentTile = tile;
                 tile.ItemsOnTile.Add(item);
                 room.ItemsInRoom.Add(item);

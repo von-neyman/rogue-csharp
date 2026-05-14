@@ -22,10 +22,9 @@ internal static class AISystem
         var enemy = MonsterSeeksEnemy(monster);
         if (enemy != null)
         {
-            // TODO: заменить на FogOfWarSystem.IsVisible
-            if (IsVisible(monster, enemy)) return GetDirectionToEnemy(monster, enemy, failedDirections);
+            if (FogOfWarSystem.IsCreatureVisible(monster, enemy)) return GetDirectionToEnemy(monster, enemy, failedDirections);
         }
-        return GetIdleAction(monster, failedDirections);
+        return GetPatrolAction(monster, failedDirections);
     }
 
     /// <summary>Монстр ищет ближайшего врага в радиусе враждебности.</summary>
@@ -47,12 +46,6 @@ internal static class AISystem
             }
         }
         return closestEnemy;
-    }
-
-    /// <summary>Заглушка проверки видимости. TODO: заменить на FogOfWarSystem.</summary>
-    private static bool IsVisible(Creature viewer, Creature target)
-    {
-        return true;
     }
 
     /// <summary>Получить направление к врагу, исключая неудачные.</summary>
@@ -90,24 +83,52 @@ internal static class AISystem
         return GameAction.None;
     }
 
-    /// <summary>Получить idle-действие согласно интерфейсам движения.</summary>
-    private static GameAction GetIdleAction(Monster monster, List<GameAction> failedDirections)
+    /// <summary>Получить действие патрулирования согласно интерфейсам движения.</summary>
+    private static GameAction GetPatrolAction(Monster monster, List<GameAction> failedDirections)
     {
-        if (monster is ITeleport)
+        if (monster is ITeleport) return TryTeleport(monster);
+        if (monster is IDiagonalWalk) return GetRandomDiagonalAction(failedDirections);
+        return GetRandomOrthogonalAction(failedDirections);
+    }
+
+    /// <summary>Попытаться телепортироваться на случайный видимый тайл.</summary>
+    private static GameAction TryTeleport(Monster monster)
+    {
+        var level = monster.CurrentTile?.Level;
+        if (level == null) return GameAction.None;
+        for (int attempt = 0; attempt < 10; attempt++)
         {
-            // TODO: телепортация в случайную точку комнаты
-            return GameAction.None;
+            int dx = Random.Shared.Next(-monster.Hostility, monster.Hostility + 1);
+            int dy = Random.Shared.Next(-monster.Hostility, monster.Hostility + 1);
+            int targetX = monster.CurrentTile!.X + dx;
+            int targetY = monster.CurrentTile!.Y + dy;
+            var targetTile = level.Map.GetTile(targetX, targetY);
+            if (targetTile != null && targetTile.IsWalkable && targetTile.CreaturesOnTile.All(c => !c.IsAlive) && FogOfWarSystem.IsTileVisible(monster, targetX, targetY))
+            {
+                monster.CurrentTile.CreaturesOnTile.Remove(monster);
+                monster.CurrentTile = targetTile;
+                targetTile.CreaturesOnTile.Add(monster);
+                return GameAction.None;
+            }
         }
-        if (monster is IDiagonalWalk)
-        {
-            var diagonalActions = new[] { GameAction.MoveUpLeft, GameAction.MoveUpRight, GameAction.MoveDownLeft, GameAction.MoveDownRight };
-            var available = diagonalActions.Where(a => !failedDirections.Contains(a)).ToList();
-            if (available.Count > 0) return available[Random.Shared.Next(available.Count)];
-            return GameAction.None;
-        }
+        return GameAction.None;
+    }
+
+    /// <summary>Случайное диагональное направление.</summary>
+    private static GameAction GetRandomDiagonalAction(List<GameAction> failedDirections)
+    {
+        var diagonalActions = new[] { GameAction.MoveUpLeft, GameAction.MoveUpRight, GameAction.MoveDownLeft, GameAction.MoveDownRight };
+        var available = diagonalActions.Where(a => !failedDirections.Contains(a)).ToList();
+        if (available.Count > 0) return available[Random.Shared.Next(available.Count)];
+        return GameAction.None;
+    }
+
+    /// <summary>Случайное ортогональное направление.</summary>
+    private static GameAction GetRandomOrthogonalAction(List<GameAction> failedDirections)
+    {
         var orthogonalActions = new[] { GameAction.MoveUp, GameAction.MoveDown, GameAction.MoveLeft, GameAction.MoveRight };
-        var availableOrth = orthogonalActions.Where(a => !failedDirections.Contains(a)).ToList();
-        if (availableOrth.Count > 0) return availableOrth[Random.Shared.Next(availableOrth.Count)];
+        var available = orthogonalActions.Where(a => !failedDirections.Contains(a)).ToList();
+        if (available.Count > 0) return available[Random.Shared.Next(available.Count)];
         return GameAction.None;
     }
 }

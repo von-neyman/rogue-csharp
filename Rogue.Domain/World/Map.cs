@@ -2,7 +2,6 @@
 
 /// <summary>
 /// Карта одного уровня подземелья.
-/// Содержит двумерный массив клеток и методы доступа с проверкой границ.
 /// </summary>
 internal class Map
 {
@@ -26,20 +25,9 @@ internal class Map
                 Tiles[y, x] = new Tile { X = x, Y = y };
     }
 
-    /// <summary>Получить клетку по координатам.</summary>
-    internal Tile GetTile(int x, int y) => Tiles[y, x];
+    /// <summary>Получить тайл по координатам. Возвращает null при выходе за границы.</summary>
+    internal Tile? GetTile(int x, int y) => IsInBounds(x, y) ? Tiles[y, x] : null;
 
-    /// <summary>Можно ли пройти по клетке (координаты в границах карты, пол или коридор, не стена).</summary>
-    internal bool IsWalkable(int x, int y)
-    {
-        if (x < 0 || x >= Width || y < 0 || y >= Height) return false;
-        return Tiles[y, x].IsWalkable;
-    }
-
-    /// <summary>Проходит ли свет через клетку (для Ray Casting).</summary>
-    internal bool IsTransparent(int x, int y)
-    {
-        if (x < 0 || x >= Width || y < 0 || y >= Height) return false;
-        return Tiles[y, x].IsTransparent;
-    }
+    /// <summary>Проверить, находятся ли координаты в границах карты.</summary>
+    private static bool IsInBounds(int x, int y) => x >= 0 && x < Width && y >= 0 && y < Height;
 }

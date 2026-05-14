@@ -136,12 +136,11 @@ internal static class InventorySystem
         {
             int targetX = currentTile.X + dx;
             int targetY = currentTile.Y + dy;
-            var level = currentTile.Level;
-            if (level?.Map.IsWalkable(targetX, targetY) == true)
+            var targetTile = currentTile.Level?.Map.GetTile(targetX, targetY);
+            if (targetTile != null && targetTile.IsWalkable)
             {
-                var tile = level.Map.GetTile(targetX, targetY);
-                item.CurrentTile = tile;
-                tile.ItemsOnTile.Add(item);
+                item.CurrentTile = targetTile;
+                targetTile.ItemsOnTile.Add(item);
                 return;
             }
         }

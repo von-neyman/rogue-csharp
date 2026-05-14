@@ -11,7 +11,7 @@ internal static class BuildMapSystem
     private const char CorridorChar = '+';
     private const char OuterAreaChar = '.';
     private const char InnerAreaChar = ' ';
-    private const char ExitChar = '|';
+    private const char ExitChar = '>';
 
     /// <summary>Заполнить карту уровня по данным комнат и коридоров.</summary>
     internal static void Build(Level level)
@@ -37,7 +37,7 @@ internal static class BuildMapSystem
             DrawRectangle(level.Map, room.TopLeft, room.BottomRight);
             InsertDoors(level.Map, room);
         }
-        level.Map.GetTile(level.ExitPoint.X, level.ExitPoint.Y).Symbol = ExitChar;
+        level.Map.GetTile(level.ExitPoint.X, level.ExitPoint.Y)!.Symbol = ExitChar;
     }
 
     /// <summary>Нарисовать прямоугольник комнаты: стены, пол.</summary>
@@ -46,18 +46,18 @@ internal static class BuildMapSystem
         int topY = topLeft.Y, leftX = topLeft.X, bottomY = bottomRight.Y, rightX = bottomRight.X;
         for (int x = leftX; x <= rightX; x++)
         {
-            map.GetTile(x, topY).Symbol = WallChar;
-            map.GetTile(x, bottomY).Symbol = WallChar;
+            map.GetTile(x, topY)!.Symbol = WallChar;
+            map.GetTile(x, bottomY)!.Symbol = WallChar;
         }
         for (int y = topY + 1; y < bottomY; y++)
         {
-            map.GetTile(leftX, y).Symbol = WallChar;
-            map.GetTile(rightX, y).Symbol = WallChar;
+            map.GetTile(leftX, y)!.Symbol = WallChar;
+            map.GetTile(rightX, y)!.Symbol = WallChar;
         }
         for (int y = topY + 1; y < bottomY; y++)
             for (int x = leftX + 1; x < rightX; x++)
             {
-                var tile = map.GetTile(x, y);
+                var tile = map.GetTile(x, y)!;
                 tile.Symbol = InnerAreaChar;
                 tile.IsWalkable = true;
                 tile.IsTransparent = true;
@@ -70,7 +70,7 @@ internal static class BuildMapSystem
         foreach (var door in room.Doors)
         {
             if (door.X == -1) continue;
-            var tile = map.GetTile(door.X, door.Y);
+            var tile = map.GetTile(door.X, door.Y)!;
             tile.Symbol = CorridorChar;
             tile.IsWalkable = true;
             tile.IsTransparent = true;
@@ -113,7 +113,7 @@ internal static class BuildMapSystem
     /// <summary>Установить клетку как коридор.</summary>
     private static void SetCorridor(Map map, int x, int y)
     {
-        var tile = map.GetTile(x, y);
+        var tile = map.GetTile(x, y)!;
         tile.Symbol = CorridorChar;
         tile.IsWalkable = true;
         tile.IsTransparent = true;

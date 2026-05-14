@@ -26,6 +26,9 @@ public class GameState
     /// <summary>Достигнута ли победа.</summary>
     internal bool IsVictory { get; set; }
 
+    /// <summary>Вышел ли игрок из игры с сохранением.</summary>
+    internal bool IsQuit { get; set; }
+
     /// <summary>Сообщения лога за текущий ход.</summary>
     internal List<string> LogMessages { get; set; } = [];
 
@@ -38,13 +41,21 @@ public class GameState
         PlacePlayerOnLevel();
     }
 
+    /// <summary>Сбросить состояние выхода после загрузки сохранённой игры.</summary>
+    public void ResetAfterLoad()
+    {
+        IsQuit = false;
+    }
+
     /// <summary>
     /// Выполнить игровое действие и обработать ход мира.
     /// </summary>
     public void DoAction(GameAction gameAction)
     {
         if (!Player.IsAlive || IsVictory) return;
+        if (CheckGameQuit(gameAction)) return;
         if (!ActionSystem.CreatureAction(Player, ref gameAction)) return;
+        FogOfWarSystem.UpdateVisibility(CurrentLevel);
         ActionSystem.MonstersAction(CurrentLevel);
         CheckLevelTransition();
         CheckGameEnd();
@@ -60,7 +71,8 @@ public class GameState
             SessionStatistics = Statistics,
             SessionLogMessages = LogMessages,
             IsAlive = Player.IsAlive,
-            SessionVictory = IsVictory
+            SessionVictory = IsVictory,
+            SessionQuit = IsQuit
         };
         return viewModel;
     }
@@ -97,7 +109,7 @@ public class GameState
     }
 
     /// <summary>Определить символ для отображения на клетке.</summary>
-    private char GetDisplaySymbol(Tile tile)
+    private static char GetDisplaySymbol(Tile tile)
     {
         if (!tile.IsVisible) return tile.IsExplored ? '#' : ' ';
         var aliveCreature = tile.CreaturesOnTile.FirstOrDefault(c => c.IsAlive);
@@ -158,6 +170,7 @@ public class GameState
     private void PlacePlayerOnLevel()
     {
         var startTile = CurrentLevel.Map.GetTile(CurrentLevel.StartPoint.X, CurrentLevel.StartPoint.Y);
+        if (startTile == null) return;
         Player.CurrentTile = startTile;
         startTile.CreaturesOnTile.Add(Player);
         CurrentLevel.Hero = Player;
@@ -165,12 +178,22 @@ public class GameState
         OnLevelChanged?.Invoke();
     }
 
-    /// <summary>Проверить окончание игры и сохранить статистику.</summary>
+    /// <summary>Проверить окончание игры.</summary>
     private void CheckGameEnd()
     {
         if (!Player.IsAlive || IsVictory)
         {
-            // TODO: сохранить статистику через ISaveLoadService.SaveLeaderboard
+            // TODO: ISaveLoadService.SaveLeaderboard(Statistics)
         }
+    }
+
+    /// <summary>Проверить выход из игры с сохранением. Возвращает true, если игрок вышел.</summary>
+    private bool CheckGameQuit(GameAction gameAction)
+    {
+        if (gameAction != GameAction.Quit) return false;
+        IsQuit = true;
+        // TODO: ISaveLoadService.Save(this)
+        // TODO: ISaveLoadService.SaveLeaderboard(Statistics)
+        return true;
     }
 }

@@ -24,4 +24,7 @@ public class GameScreenViewModel
 
     /// <summary>Достигнута ли победа в сессии.</summary>
     public bool SessionVictory { get; set; }
+
+    /// <summary>Вышел ли игрок из игры с сохранением.</summary>
+    public bool SessionQuit { get; set; }
 }
