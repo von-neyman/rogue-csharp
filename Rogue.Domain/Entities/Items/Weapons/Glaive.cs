@@ -10,6 +10,8 @@ internal class Glaive : Weapon, IHeavyWeapon, ISwiftStrike, ICounterattack
     internal Glaive()
     {
         Name = "Глефа";
+        NameAccusative = "Глефу";
+        NameDative = "Глефе";
         Description = "Длинное древко с широким изогнутым лезвием. Колющий выпад сменяется " +
                       "рубящим — и если первая атака не достигла цели, разворот древка даёт " +
                       "вторую попытку. Враг пошатнулся после промаха? Глефа тут же наказывает.";

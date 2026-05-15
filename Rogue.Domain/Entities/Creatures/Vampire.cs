@@ -17,6 +17,8 @@ internal class Vampire : Monster, IRandomWalk, IFirstAttackEvasion, IReducesMaxH
     internal Vampire()
     {
         Name = "Вампир";
+        NameAccusative = "Вампира";
+        NameDative = "Вампиру";
         Description = "Ловкий и живучий хищник.";
         ShortDescription = "Монстр.";
         Faction = Faction.DungeonMonsters;

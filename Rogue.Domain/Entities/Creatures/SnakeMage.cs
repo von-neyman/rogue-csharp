@@ -13,6 +13,8 @@ internal class SnakeMage : Monster, IDiagonalWalk, ISleepInducer
     internal SnakeMage()
     {
         Name = "Змей-Маг";
+        NameAccusative = "Змея-Мага";
+        NameDative = "Змею-Магу";
         Description = "Стремительный противник с гипнотическим укусом.";
         ShortDescription = "Монстр.";
         Faction = Faction.DungeonMonsters;

@@ -11,6 +11,8 @@ internal class GoldGoblet : Treasure
     internal GoldGoblet()
     {
         Name = "Золотой кубок";
+        NameAccusative = "Золотой кубок";
+        NameDative = "Золотому кубку";
         Description = "Кубок, достойный короля.";
         ShortDescription = $"Стоит {Value} золотых.";
         Symbol = '$';

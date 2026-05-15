@@ -10,6 +10,8 @@ internal class Greatsword : Weapon, IHeavyWeapon, ISwiftStrike, ICrit
     internal Greatsword()
     {
         Name = "Двуручный меч";
+        NameAccusative = "Двуручный меч";
+        NameDative = "Двуручному мечу";
         Description = "Огромный клинок, который держат двумя руками. Замах — и лезвие " +
                       "обрушивается на врага. Промахнулся? Обратный ход меча даёт второй шанс. " +
                       "Попадание — почти гарантированная смерть. Крит — враг разваливается надвое.";

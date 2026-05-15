@@ -10,6 +10,8 @@ internal class Estoc : Weapon, IBalancedWeapon, ISwiftStrike, IParry
     internal Estoc()
     {
         Name = "Эсток";
+        NameAccusative = "Эсток";
+        NameDative = "Эстоку";
         Description = "Гранёный меч без лезвия — только остриё. Два выпада подряд: " +
                       "если первый не достиг цели, второй идёт немедленно. Прочная сталь " +
                       "позволяет встречать вражеский клинок и отводить его в сторону.";

@@ -10,6 +10,8 @@ internal class Hardtack : Food
     internal Hardtack()
     {
         Name = "Сухарь";
+        NameAccusative = "Сухарь";
+        NameDative = "Сухарю";
         Description = "Чёрствый, но съедобный. В подземелье и этому рад.";
         ShortDescription = $"Восстанавливает {HealingPercent} процентов здоровья.";
         Symbol = '%';

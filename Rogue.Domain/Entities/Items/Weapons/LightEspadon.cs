@@ -10,6 +10,8 @@ internal class LightEspadon : Weapon, ILightWeapon, ISwiftStrike, IParry
     internal LightEspadon()
     {
         Name = "Лёгкий эспадон";
+        NameAccusative = "Лёгкий эспадон";
+        NameDative = "Лёгкому эспадону";
         Description = "Длинный двуручный меч из тонкой, гибкой стали. Два стремительных укола " +
                       "подряд: первый — разведка, второй — добивание. Клинок настолько лёгок, " +
                       "что им можно встретить вражеский удар и отвести его в сторону.";

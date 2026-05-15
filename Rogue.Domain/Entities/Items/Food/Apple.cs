@@ -10,6 +10,8 @@ internal class Apple : Food
     internal Apple()
     {
         Name = "Яблоко";
+        NameAccusative = "Яблоко";
+        NameDative = "Яблоку";
         Description = "Свежее, будто только с ветки. Как оно здесь оказалось?";
         ShortDescription = $"Восстанавливает {HealingPercent} процентов здоровья.";
         Symbol = '%';

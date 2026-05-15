@@ -144,6 +144,8 @@ public class GameState
         ActionSystem.OnStepTaken += () => Statistics.StepsTaken++;
         InventorySystem.OnTreasureCollected += () => Statistics.TreasureCollected = Player.Inventory.TotalTreasureValue;
         OnLevelChanged += () => Statistics.LevelReached = CurrentLevel.LevelNumber;
+        CombatSystem.OnLogMessage += (msg) => LogMessages.Add(msg);
+        InventorySystem.OnLogMessage += (msg) => LogMessages.Add(msg);
     }
 
     /// <summary>Проверить переход на следующий уровень.</summary>
@@ -175,6 +177,8 @@ public class GameState
         startTile.CreaturesOnTile.Add(Player);
         CurrentLevel.Hero = Player;
         CurrentLevel.HeroParty.Add(Player);
+        LogMessages.Clear();
+        LogMessages.Add($"{Player.Name} спустился на {CurrentLevel.LevelNumber} ярус подземелья.");
         OnLevelChanged?.Invoke();
     }
 

@@ -10,6 +10,8 @@ internal class Saber : Weapon, ILightWeapon, ICrit, IParry
     internal Saber()
     {
         Name = "Сабля";
+        NameAccusative = "Саблю";
+        NameDative = "Сабле";
         Description = "Изогнутый клинок с односторонней заточкой. Быстрый рубящий удар — " +
                       "если лезвие находит уязвимую точку, рана глубока и опасна. " +
                       "Гарда надёжно отбивает половину вражеских атак.";

@@ -10,6 +10,8 @@ internal class Pole : Weapon, IHeavyWeapon, ISwiftStrike, IParry
     internal Pole()
     {
         Name = "Шест";
+        NameAccusative = "Шест";
+        NameDative = "Шесту";
         Description = "Длинная окованная палка. Удар одним концом, промах — удар другим. " +
                       "Древко подставляется под вражеский замах, отбивая половину атак. " +
                       "Никакой магии — только физика и рычаг.";

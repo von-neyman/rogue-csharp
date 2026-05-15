@@ -12,6 +12,8 @@ internal class Zombie : Monster, IRandomWalk
     internal Zombie()
     {
         Name = "Зомби";
+        NameAccusative = "Зомби";
+        NameDative = "Зомби";
         Description = "Неповоротливый, но живучий противник.";
         ShortDescription = "Монстр.";
         Faction = Faction.DungeonMonsters;

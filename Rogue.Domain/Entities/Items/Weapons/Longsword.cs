@@ -10,6 +10,8 @@ internal class Longsword : Weapon, IBalancedWeapon, ICounterattack, IParry
     internal Longsword()
     {
         Name = "Длинный меч";
+        NameAccusative = "Длинный меч";
+        NameDative = "Длинному мечу";
         Description = "Классический рыцарский меч. Один мощный вертикальный удар сверху. " +
                       "Гарда ловит вражеский клинок и отводит его. Враг промахнулся — " +
                       "обратный замах не заставляет себя ждать.";

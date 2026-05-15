@@ -11,6 +11,8 @@ internal class ScrollOfAgility : Scroll
     internal ScrollOfAgility()
     {
         Name = "Свиток ловкости";
+        NameAccusative = "Свиток ловкости";
+        NameDative = "Свитку ловкости";
         Description = "Пергамент с лёгкими, струящимися письменами. Ловкость возрастает навсегда.";
         ShortDescription = $"Увеличивает ловкость на {Scroll.StatIncrease}.";
         Symbol = '?';

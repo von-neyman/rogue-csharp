@@ -10,6 +10,8 @@ internal class Cleaver : Weapon, IBalancedWeapon, ICrit, ICounterattack
     internal Cleaver()
     {
         Name = "Тесак";
+        NameAccusative = "Тесак";
+        NameDative = "Тесаку";
         Description = "Широкий тяжёлый нож для рубки мяса. Один размашистый удар — " +
                       "и если лезвие зашло под верным углом, рана получается чудовищной. " +
                       "Враг зазевался после промаха? Тесак возвращается обратным ходом.";

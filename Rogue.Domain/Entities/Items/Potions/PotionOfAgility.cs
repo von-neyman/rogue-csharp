@@ -11,6 +11,8 @@ internal class PotionOfAgility : Potion
     internal PotionOfAgility()
     {
         Name = "Зелье ловкости";
+        NameAccusative = "Зелье ловкости";
+        NameDative = "Зелью ловкости";
         Description = "Искрящаяся жидкость, убегающая от стенок склянки. Временно удваивает ловкость.";
         ShortDescription = $"Удваивает ловкость на {Potion.Duration} ходов.";
         Symbol = '!';

@@ -10,6 +10,8 @@ internal class DaggerPair : Weapon, ILightWeapon, ISwiftStrike, ICrit
     internal DaggerPair()
     {
         Name = "Парные кинжалы";
+        NameAccusative = "Парные кинжалы";
+        NameDative = "Парным кинжалам";
         Description = "Два коротких клинка в обеих руках. Первый кинжал летит в цель — " +
                       "если проходит мимо, второй бьёт немедленно. Любое попадание может " +
                       "стать критическим: кинжал находит уязвимую точку, и рана становится " +

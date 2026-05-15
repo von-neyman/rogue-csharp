@@ -10,6 +10,8 @@ internal class Cheese : Food
     internal Cheese()
     {
         Name = "Сыр";
+        NameAccusative = "Сыр";
+        NameDative = "Сыру";
         Description = "Кусок выдержанного сыра. Запах чувствуется за километр.";
         ShortDescription = $"Восстанавливает {HealingPercent} процентов здоровья.";
         Symbol = '%';

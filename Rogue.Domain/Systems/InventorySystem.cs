@@ -15,6 +15,9 @@ namespace Rogue.Domain.Systems;
 /// </summary>
 internal static class InventorySystem
 {
+    /// <summary>Событие: запись в лог.</summary>
+    internal static event Action<string>? OnLogMessage;
+
     /// <summary>Событие: игрок подобрал сокровище.</summary>
     internal static event Action? OnTreasureCollected;
 
@@ -26,14 +29,32 @@ internal static class InventorySystem
         for (int i = creature.CurrentTile.ItemsOnTile.Count - 1; i >= 0; i--)
         {
             var item = creature.CurrentTile.ItemsOnTile[i];
+            bool added = false;
             switch (item)
             {
-                case Food food: inventory.Inventory.AddFood(food); break;
-                case Weapon weapon: inventory.Inventory.AddWeapon(weapon); break;
-                case Scroll scroll: inventory.Inventory.AddScroll(scroll); break;
-                case Potion potion: inventory.Inventory.AddPotion(potion); break;
+                case Food food:
+                    added = inventory.Inventory.AddFood(food);
+                    if (added) LogInventory($"{creature.Name} подобрал {food.NameAccusative}. {food.Description}");
+                    else LogInventory($"{creature.Name} попытался подобрать {food.NameAccusative}, но в рюкзаке нет места.");
+                    break;
+                case Weapon weapon:
+                    added = inventory.Inventory.AddWeapon(weapon);
+                    if (added) LogInventory($"{creature.Name} подобрал {weapon.NameAccusative}. {weapon.Description}");
+                    else LogInventory($"{creature.Name} попытался подобрать {weapon.NameAccusative}, но в рюкзаке нет места.");
+                    break;
+                case Scroll scroll:
+                    added = inventory.Inventory.AddScroll(scroll);
+                    if (added) LogInventory($"{creature.Name} подобрал {scroll.NameAccusative}. {scroll.Description}");
+                    else LogInventory($"{creature.Name} попытался подобрать {scroll.NameAccusative}, но в рюкзаке нет места.");
+                    break;
+                case Potion potion:
+                    added = inventory.Inventory.AddPotion(potion);
+                    if (added) LogInventory($"{creature.Name} подобрал {potion.NameAccusative}. {potion.Description}");
+                    else LogInventory($"{creature.Name} попытался подобрать {potion.NameAccusative}, но в рюкзаке нет места.");
+                    break;
                 case Treasure treasure:
                     inventory.Inventory.AddTreasure(treasure);
+                    LogInventory($"{creature.Name} подобрал {treasure.NameAccusative}. {treasure.Description}");
                     OnTreasureCollected?.Invoke();
                     break;
             }
@@ -60,8 +81,22 @@ internal static class InventorySystem
         var item = list[slotIndex - 1];
         list.RemoveAt(slotIndex - 1);
         PlaceOnGround(item, creature);
+        LogInventory($"{creature.Name} выбросил {item.NameAccusative}.");
         return true;
     }
+
+    /// <summary>Выбросить сокровище существа при смерти.</summary>
+    internal static void DropLoot(Creature creature)
+    {
+        if (creature is not ILoot loot || loot.TreasureLoot == null) return;
+        loot.TreasureLoot.CurrentTile = creature.CurrentTile;
+        creature.CurrentTile?.ItemsOnTile.Add(loot.TreasureLoot);
+        creature.CurrentTile?.Level?.Items.Add(loot.TreasureLoot);
+        loot.TreasureLoot = null;
+    }
+
+    /// <summary>Записать сообщение в лог.</summary>
+    private static void LogInventory(string message) => OnLogMessage?.Invoke(message);
 
     /// <summary>Использовать еду из инвентаря по индексу (1-9).</summary>
     private static bool UseFood(Creature creature, int slotIndex)
@@ -69,8 +104,10 @@ internal static class InventorySystem
         if (creature is not IInventory inventory) return false;
         if (slotIndex < 1 || slotIndex > inventory.Inventory.Foods.Count) return false;
         var food = inventory.Inventory.Foods[slotIndex - 1];
-        creature.Heal(food.CalculateHealing(creature.MaxHealth));
+        int healing = food.CalculateHealing(creature.MaxHealth);
+        creature.Heal(healing);
         inventory.Inventory.Foods.RemoveAt(slotIndex - 1);
+        LogInventory($"{creature.Name} съел {food.NameAccusative}. Восстановлено {healing} здоровья.");
         return true;
     }
 
@@ -82,6 +119,7 @@ internal static class InventorySystem
         var potion = inventory.Inventory.Potions[slotIndex - 1];
         potion.Apply(creature);
         inventory.Inventory.Potions.RemoveAt(slotIndex - 1);
+        LogInventory($"{creature.Name} выпил {potion.NameAccusative}. Эффект продлится {Potion.Duration} ходов.");
         return true;
     }
 
@@ -93,6 +131,7 @@ internal static class InventorySystem
         var scroll = inventory.Inventory.Scrolls[slotIndex - 1];
         scroll.Apply(creature);
         inventory.Inventory.Scrolls.RemoveAt(slotIndex - 1);
+        LogInventory($"{creature.Name} прочитал {scroll.NameAccusative}. Характеристика увеличена.");
         return true;
     }
 
@@ -103,7 +142,12 @@ internal static class InventorySystem
         if (slotIndex == 0)
         {
             if (equipment.EquippedWeapon == null) return false;
-            if (!inventory.Inventory.AddWeapon(equipment.EquippedWeapon)) PlaceOnGround(equipment.EquippedWeapon, creature);
+            if (!inventory.Inventory.AddWeapon(equipment.EquippedWeapon))
+            {
+                PlaceOnGround(equipment.EquippedWeapon, creature);
+                LogInventory($"{creature.Name} выбросил {equipment.EquippedWeapon.NameAccusative} на пол.");
+            }
+            else LogInventory($"{creature.Name} убрал {equipment.EquippedWeapon.NameAccusative} в рюкзак.");
             equipment.EquippedWeapon = null;
             return true;
         }
@@ -112,6 +156,7 @@ internal static class InventorySystem
         if (equipment.EquippedWeapon != null) inventory.Inventory.Weapons[slotIndex - 1] = equipment.EquippedWeapon;
         else inventory.Inventory.Weapons.RemoveAt(slotIndex - 1);
         equipment.EquippedWeapon = newWeapon;
+        LogInventory($"{creature.Name} взял в руки {newWeapon.NameAccusative}.");
         return true;
     }
 
@@ -156,14 +201,4 @@ internal static class InventorySystem
         creature.CurrentTile?.ItemsOnTile.Add(item);
     }
     */
-
-    /// <summary>Выбросить сокровище существа при смерти.</summary>
-    internal static void DropLoot(Creature creature)
-    {
-        if (creature is not ILoot loot || loot.TreasureLoot == null) return;
-        loot.TreasureLoot.CurrentTile = creature.CurrentTile;
-        creature.CurrentTile?.ItemsOnTile.Add(loot.TreasureLoot);
-        creature.CurrentTile?.Level?.Items.Add(loot.TreasureLoot);
-        loot.TreasureLoot = null;
-    }
 }

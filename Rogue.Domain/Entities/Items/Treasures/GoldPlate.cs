@@ -11,6 +11,8 @@ internal class GoldPlate : Treasure
     internal GoldPlate()
     {
         Name = "Золотая тарелка";
+        NameAccusative = "Золотую тарелку";
+        NameDative = "Золотой тарелке";
         Description = "Тяжёлая золотая тарелка.";
         ShortDescription = $"Стоит {Value} золотых.";
         Symbol = '$';

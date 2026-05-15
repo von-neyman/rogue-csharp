@@ -15,6 +15,8 @@ internal class Ghost : Monster, ITeleport, IInvisible
     internal Ghost()
     {
         Name = "Привидение";
+        NameAccusative = "Привидение";
+        NameDative = "Привидению";
         Description = "Невидимый телепортирующийся противник.";
         ShortDescription = "Монстр.";
         Faction = Faction.DungeonMonsters;

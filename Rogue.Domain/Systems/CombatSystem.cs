@@ -9,6 +9,9 @@ namespace Rogue.Domain.Systems;
 /// </summary>
 internal static class CombatSystem
 {
+    /// <summary>Событие: запись в лог боя.</summary>
+    internal static event Action<string>? OnLogMessage;
+
     /// <summary>Событие: игрок попал по врагу.</summary>
     internal static event Action? OnHitLanded;
 
@@ -25,11 +28,12 @@ internal static class CombatSystem
     /// </summary>
     internal static bool Attack(Creature attacker, Creature defender)
     {
-        if (!CheckRecharge(attacker)) return false;
+        CheckRecharge(attacker);
         bool hit = CheckFirstAttackEvasion(defender);
         if (hit) hit = RollHit(attacker, defender);
         if (!hit)
         {
+            LogAttack($"{attacker.Name} атаковал {defender.NameAccusative}, но промахнулся.");
             CheckCounterAttack(attacker, defender);
             hit = CheckSwiftStrike(attacker, defender);
         }
@@ -37,20 +41,22 @@ internal static class CombatSystem
         if (hit)
         {
             int damage = CalculateDamage(attacker);
+            LogAttack($"{attacker.Name} ударил {defender.NameAccusative} и нанёс {damage} ед. урона.");
             defender.TakeDamage(damage);
+            if (!defender.IsAlive) LogAttack($"{defender.Name} погибает.");
             UpdateStatistics(attacker, defender);
             CheckSpecialEffects(attacker, defender);
         }
         return hit;
     }
 
-    /// <summary>Если атакующий должен перезаряжаться после атаки — пропускает следующий ход.
-    /// Если атакующий уже перезаряжается - не может атаковать до следующего хода.</summary>
-    private static bool CheckRecharge(Creature attacker)
+    /// <summary>Записать сообщение в лог.</summary>
+    private static void LogAttack(string message) => OnLogMessage?.Invoke(message);
+
+    /// <summary>Если атакующий должен отдыхать или перезаряжаться после атаки — пропускает следующий ход.</summary>
+    private static void CheckRecharge(Creature attacker)
     {
-        if (attacker is IRecharge && attacker.SkipTurns > 0) return false;
-        if (attacker is IRecharge) attacker.SkipTurns += 1;
-        return true;
+        if (attacker is IRelax) attacker.SkipTurns++;
     }
 
     /// <summary>Вычислить шанс попадания и выполнить бросок.</summary>
@@ -102,6 +108,7 @@ internal static class CombatSystem
         if (defender is IFirstAttackEvasion evasion && !evasion.HasEvaded)
         {
             evasion.HasEvaded = true;
+            LogAttack($"{defender.Name} уклонился от первой атаки!");
             return false;
         }
         return true;
@@ -110,8 +117,11 @@ internal static class CombatSystem
     /// <summary>Проверка на контратаку защитника.</summary>
     private static void CheckCounterAttack(Creature attacker, Creature defender)
     {
-        if (defender is IEquipment defenderEquip && defenderEquip.EquippedWeapon is ICounterattack)
+        if (defender.SkipTurns == 0 && defender is IEquipment defenderEquip && defenderEquip.EquippedWeapon is ICounterattack)
+        {
+            LogAttack($"{defender.Name} контратакует {attacker.NameAccusative}!");
             Attack(defender, attacker);
+        }
     }
 
     /// <summary>Проверка на стремительную атаку: второй шанс при промахе.</summary>
@@ -120,7 +130,12 @@ internal static class CombatSystem
         if (attacker is IEquipment attackerEquip && attackerEquip.EquippedWeapon is ISwiftStrike)
         {
             bool secondHit = RollHit(attacker, defender);
-            if (!secondHit) CheckCounterAttack(attacker, defender);
+            if (secondHit) LogAttack($"{attacker.Name} пытается нанести удар ещё раз!");
+            else
+            {
+                LogAttack($"{attacker.Name} бьёт по {defender.NameDative} ещё раз, но снова промахивается!");
+                CheckCounterAttack(attacker, defender);
+            }
             return secondHit;
         }
         return false;
@@ -129,10 +144,11 @@ internal static class CombatSystem
     /// <summary>Проверка парирования: 50% шанс отбить атаку.</summary>
     private static bool CheckParry(Creature attacker, Creature defender)
     {
-        if (defender is IEquipment defEquip && defEquip.EquippedWeapon is IParry)
+        if (defender.SkipTurns == 0 && defender is IEquipment defEquip && defEquip.EquippedWeapon is IParry)
         {
             if (RandomGenerator.Next(2) == 0)
             {
+                LogAttack($"{defender.Name} парировал атаку {attacker.NameAccusative}!");
                 CheckCounterAttack(attacker, defender);
                 return false;
             }
@@ -152,8 +168,16 @@ internal static class CombatSystem
     /// <summary>Проверка на особые эффекты атаки.</summary>
     private static void CheckSpecialEffects(Creature attacker, Creature defender)
     {
-        if (attacker is IReducesMaxHealth) EffectSystem.ApplyMaxHealthReduction(defender);
-        if (attacker is ISleepInducer && RandomGenerator.Next(2) == 0) EffectSystem.ApplySleep(defender);
+        if (attacker is IReducesMaxHealth)
+        {
+            EffectSystem.ApplyMaxHealthReduction(defender);
+            LogAttack($"Максимальное здоровье {defender.NameAccusative} уменьшено.");
+        }
+        if (attacker is ISleepInducer && RandomGenerator.Next(2) == 0)
+        {
+            EffectSystem.ApplySleep(defender);
+            LogAttack($"{defender.Name} усыплён.");
+        }
     }
 
     /// <summary>Обновить статистику по результатам атаки.</summary>

@@ -6,8 +6,8 @@ internal interface ICanAttack
     bool Attack(Creature target);
 }
 
-/// <summary>После атаки требуется перезарядка (отдых) — следующий ход пропускается.</summary>
-internal interface IRecharge { }
+/// <summary>После атаки требуется отдых — следующий ход пропускается.</summary>
+internal interface IRelax { }
 
 /// <summary>Первая атака по этому существу гарантированно промахивается.</summary>
 internal interface IFirstAttackEvasion

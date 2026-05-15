@@ -21,4 +21,10 @@ internal abstract class Entity
 
     /// <summary>Короткое описание с характеристиками.</summary>
     internal string ShortDescription { get; set; } = string.Empty;
+
+    /// <summary>Имя в винительном падеже (кого?).</summary>
+    internal string NameAccusative { get; set; } = string.Empty;
+
+    /// <summary>Имя в дательном падеже (кому?).</summary>
+    internal string NameDative { get; set; } = string.Empty;
 }

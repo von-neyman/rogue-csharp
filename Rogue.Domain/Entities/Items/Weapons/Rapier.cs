@@ -10,6 +10,8 @@ internal class Rapier : Weapon, ILightWeapon, ISwiftStrike, ICounterattack
     internal Rapier()
     {
         Name = "Рапира";
+        NameAccusative = "Рапиру";
+        NameDative = "Рапире";
         Description = "Тонкий длинный клинок с изящной гардой. Мгновенный колющий выпад — " +
                       "и если остриё проходит мимо, рапира возвращается и колет снова. " +
                       "Враг промахивается? Рапира не прощает ошибок: контратака следует немедленно.";

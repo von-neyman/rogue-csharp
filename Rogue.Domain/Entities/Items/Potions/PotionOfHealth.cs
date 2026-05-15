@@ -11,6 +11,8 @@ internal class PotionOfHealth : Potion
     internal PotionOfHealth()
     {
         Name = "Зелье здоровья";
+        NameAccusative = "Зелье здоровья";
+        NameDative = "Зелью здоровья";
         Description = "Густая алая жидкость. Временно удваивает максимальное здоровье.";
         ShortDescription = $"Удваивает здоровье на {Potion.Duration} ходов.";
         Symbol = '!';

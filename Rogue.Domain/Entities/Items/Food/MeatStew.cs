@@ -10,6 +10,8 @@ internal class MeatStew : Food
     internal MeatStew()
     {
         Name = "Горшочек жаркого";
+        NameAccusative = "Горшочек жаркого";
+        NameDative = "Горшочку жаркого";
         Description = "Глиняный горшочек с горячим мясом и подливой. Откуда это здесь?";
         ShortDescription = $"Восстанавливает {HealingPercent} процентов здоровья.";
         Symbol = '%';

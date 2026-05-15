@@ -20,6 +20,8 @@ internal class Hero : Creature, IInventory, IEquipment, ICanMove, ICanAttack
     internal Hero()
     {
         Name = "Герой";
+        NameAccusative = "Героя";
+        NameDative = "Герою";
         Description = "Искатель приключений.";
         ShortDescription = "Это вы.";
         Faction = Faction.HeroParty;

@@ -11,6 +11,8 @@ internal class ScrollOfStrength : Scroll
     internal ScrollOfStrength()
     {
         Name = "Свиток силы";
+        NameAccusative = "Свиток силы";
+        NameDative = "Свитку силы";
         Description = "Пергамент, исписанный рунами. При прочтении сила увеличивается навсегда.";
         ShortDescription = $"Увеличивает силу на {Scroll.StatIncrease}.";
         Symbol = '?';
